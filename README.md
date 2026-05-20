@@ -8,7 +8,7 @@ This project replicates and extends [FedLock](https://www.bloomberg.com/news/new
 
 ## Research Question
 
-Can the tone of Federal Reserve Chair speeches — specifically how hawkish or dovish they sound — predict same-day market movements (e.g., Treasury yield changes, VIX)?
+Can the tone of Federal Reserve Chair speeches — specifically how hawkish or dovish they sound — predict same-day Treasury yield movements?
 
 ---
 
@@ -22,7 +22,11 @@ data        filter       hawkishness  markets      write up
 
 ### Phase 0 — Data Ingestion (this phase)
 - Scrape all speeches by Fed Chairs (Bernanke, Yellen, Powell) from `federalreserve.gov`, 2008–2025
-- Pull macro time series from FRED: 2-year Treasury yield (DGS2), core PCE inflation (PCEPILFE), VIX (VIXCLS), and GDP growth
+- Pull macro time series from FRED:
+  - **DGS2** (2-year Treasury yield) — primary outcome variable for Phase 3a; daily end-of-day close
+  - **EFFR** (effective federal funds rate) — the level of rates at the time of the speech; LLM scoring context for Phase 2
+  - **PCEPILFE** (core PCE inflation), **UNRATE** (unemployment rate), and **GDP growth** — macro context snapshots for Phase 2 LLM scoring; forward-filled to each speech date using the most recently *released* value as of that date (not the most recent reference period, which may not yet have been published)
+- Pull FOMC meeting calendar from `federalreserve.gov` (historical dates, 2008–2025) — used to flag speeches that coincide with a meeting day and to exclude post-meeting press conference transcripts, which are policy statements rather than speeches
 - Align each macro snapshot to the date of each speech
 
 ### Phase 1 — Preprocessing
@@ -36,7 +40,7 @@ data        filter       hawkishness  markets      write up
 - This unsupervised approach avoids the "bimodal scoring" problem that arises when asking an LLM to score directly on a 1–100 scale
 
 ### Phase 3 — Supervised Learning
-- **Market reaction (3a):** Predict same-day yield or VIX changes using hawkishness score + macro features. Baseline: OLS. Also try LASSO, Random Forest, and TabPFN.
+- **Market reaction (3a):** Predict same-day 2-year Treasury yield changes (end-of-day close) using a stepwise approach — start with hawkishness score alone to establish a baseline signal, then incrementally add complexity (e.g., EFFR level as a control for the rate environment, chair fixed effects, speech-type flags). The goal is to show that speech tone has predictive power on its own before layering in controls. Baseline: OLS. Also try LASSO, Random Forest, and TabPFN.
 - **Score distillation (3b):** Predict hawkishness score from speech text features alone (TF-IDF, SBERT embeddings, fine-tuned FinBERT). This tests whether the score can be reproduced cheaply from text.
 
 ### Phase 4 — Validation
@@ -51,7 +55,9 @@ data        filter       hawkishness  markets      write up
 | Source | Description | Series |
 |--------|-------------|--------|
 | [federalreserve.gov](https://www.federalreserve.gov/newsevents/speech/) | Fed Chair speeches, full text | 2008–2025 |
-| [FRED](https://fred.stlouisfed.org/) | Macro time series | DGS2, PCEPILFE, VIXCLS, GDP growth |
+| [FRED](https://fred.stlouisfed.org/) | 2-year Treasury yield — outcome variable | DGS2 |
+| [FRED](https://fred.stlouisfed.org/) | Macro context for LLM scoring (Phase 2 only) | EFFR, PCEPILFE, UNRATE, GDP growth |
+| [federalreserve.gov](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm) | FOMC meeting dates — for flagging/excluding meeting-day speeches | 2008–2025 |
 | [FedLock](https://bloomberg.com) | Published hawkishness scores | Validation only |
 
 **Fed Chairs covered:**
@@ -112,8 +118,17 @@ When you ask an LLM to score something on a 1–100 scale, the output tends to c
 **Why anonymize speakers?**
 LLMs have prior beliefs about who is a hawk or dove based on their training data. Stripping speaker names forces the model to judge the actual language of the speech rather than the person's reputation.
 
-**Why include macro context?**
-"Rates will hold steady" sounds dovish during normal times but hawkish when markets expected a cut. Providing the macro backdrop (inflation, unemployment, GDP) lets the LLM judge whether a speech is hawkish *relative to conditions at the time*.
+**Why include macro context in scoring (but not in the regression)?**
+"Rates will hold steady" sounds dovish during normal times but hawkish when markets expected a cut. We attach EFFR, inflation (PCEPILFE), unemployment (UNRATE), and GDP growth to each speech so the LLM can judge hawkishness *relative to conditions at the time* during Phase 2 pairwise comparisons. These series are *not* used as features in the Phase 3a regression — they move too slowly (monthly/quarterly) to explain same-day yield moves, and mixing them in would muddy the core question: does speech tone itself carry predictive signal? The one exception is EFFR, which may be added as a control in later regression models (see stepwise approach below).
+
+**Macro data forward-fill rule**
+PCE is monthly; GDP is quarterly. For each speech date we attach the most recently *released* value as of that date — not the most recent reference period, which may not have been published yet. For example, a speech on February 3rd gets the December PCE figure only if it had already been released by then. This avoids lookahead bias — using data the market couldn't have known at the time.
+
+**Why stepwise regression rather than a kitchen-sink model?**
+We build up the Phase 3a models in stages: hawkishness score alone first, then progressively add controls (EFFR level, chair fixed effects, etc.). This lets us show that speech tone has signal on its own before asking whether it survives in a richer specification. Throwing all features in at once makes it hard to tell which variable is doing the work.
+
+**Known limitation: speech timestamps not collected**
+The scraper does not capture the time of day each speech was delivered. Ideally, an afternoon or post-market speech should map to the *next* trading day's yield change rather than the same day. Without timestamps we treat all speeches as same-day events, which introduces some noise in the outcome variable for late-day speeches.
 
 ---
 
