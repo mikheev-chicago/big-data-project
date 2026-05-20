@@ -98,6 +98,12 @@ def align_snapshot(speeches: pd.DataFrame, raw: dict) -> pd.DataFrame:
         ref = s.dropna().reset_index()
         ref.columns = ["date", col]
         ref["date"] = pd.to_datetime(ref["date"])
+        # GDP: FRED dates observations at the START of the reference quarter,
+        # but the advance estimate isn't released until ~30 days after quarter END.
+        # Shift dates forward by 3 months + 30 days so the backward merge never
+        # attaches a GDP figure that wasn't publicly available yet.
+        if col == "GDP_GROWTH":
+            ref["date"] = ref["date"] + pd.DateOffset(months=3, days=30)
         ref = ref.sort_values("date")
         merged = pd.merge_asof(unique_dates, ref, on="date", direction="backward")
         result[col] = merged[col].values
@@ -122,7 +128,9 @@ def main():
 
     speeches_path = PROCESSED_DIR / "speeches.csv"
     if not speeches_path.exists():
-        sys.exit("Error: speeches.csv not found — run scrape_speeches.py first.")
+        log.warning("speeches.csv not found — skipping alignment step.")
+        log.warning("Re-run fetch_fred.py after scrape_speeches.py finishes to produce macro_context.csv.")
+        return
 
     speeches = pd.read_csv(speeches_path)
     log.info(f"\nAligning macro snapshots to {len(speeches)} speeches...")

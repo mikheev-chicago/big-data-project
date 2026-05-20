@@ -41,7 +41,45 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-YEARS = range(2008, 2026)
+# 2008–2010 historical pages don't embed statement links — the text parser
+# over-counts by grabbing speech dates and meeting start days. Hard-coded from
+# the Fed's published historical record (announcement dates only).
+HARDCODED = {
+    2008: [
+        "2008-01-22",  # emergency -75bp
+        "2008-01-30",  # regular
+        "2008-03-18",  # regular
+        "2008-04-30",  # regular
+        "2008-06-25",  # regular
+        "2008-08-05",  # regular
+        "2008-09-16",  # regular
+        "2008-10-08",  # emergency coordinated cut
+        "2008-10-29",  # regular
+        "2008-12-16",  # regular (cut to 0–0.25%)
+    ],
+    2009: [
+        "2009-01-28",
+        "2009-03-18",
+        "2009-04-29",
+        "2009-06-24",
+        "2009-08-12",
+        "2009-09-23",
+        "2009-11-04",
+        "2009-12-16",
+    ],
+    2010: [
+        "2010-01-27",
+        "2010-03-16",
+        "2010-04-28",
+        "2010-06-23",
+        "2010-08-10",
+        "2010-09-21",
+        "2010-11-03",  # QE2 announced
+        "2010-12-14",
+    ],
+}
+
+YEARS = range(2011, 2026)  # 2008–2010 handled by HARDCODED above
 
 # FOMC statement links encode the announcement date: monetary{YYYYMMDD}a*.htm
 _LINK_DATE_RE = re.compile(r"/monetary(\d{8})[a-z]", re.IGNORECASE)
@@ -151,6 +189,11 @@ def fetch_year(session, year):
 def main():
     session = make_session()
     records = []
+
+    for year, dates in HARDCODED.items():
+        log.info(f"── {year} (hard-coded: {len(dates)} meetings)")
+        for d in dates:
+            records.append({"date": d, "year": year})
 
     for year in YEARS:
         log.info(f"── {year}")
