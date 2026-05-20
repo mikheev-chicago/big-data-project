@@ -20,19 +20,23 @@ Collect     Clean &      Score        Predict      Validate &
 data        filter       hawkishness  markets      write up
 ```
 
-### Phase 0 — Data Ingestion (this phase)
-- Scrape all speeches by Fed Chairs (Bernanke, Yellen, Powell) from `federalreserve.gov`, 2008–2025
-- Pull macro time series from FRED:
-  - **DGS2** (2-year Treasury yield) — primary outcome variable for Phase 3a; daily end-of-day close
-  - **EFFR** (effective federal funds rate) — the level of rates at the time of the speech; LLM scoring context for Phase 2
-  - **PCEPILFE** (core PCE inflation), **UNRATE** (unemployment rate), and **GDP growth** — macro context snapshots for Phase 2 LLM scoring; forward-filled to each speech date using the most recently *released* value as of that date (not the most recent reference period, which may not yet have been published)
-- Pull FOMC meeting calendar from `federalreserve.gov` (historical dates, 2008–2025) — used to flag speeches that coincide with a meeting day and to exclude post-meeting press conference transcripts, which are policy statements rather than speeches
-- Align each macro snapshot to the date of each speech
+### Phase 0 — Data Ingestion ✅ complete
+- Scraped **242 speeches** by Fed Chairs (Bernanke, Yellen, Powell) from `federalreserve.gov`, 2008–2025
+- Pulled macro time series from FRED:
+  - **DGS2** (2-year Treasury yield) — primary outcome variable for Phase 3a; daily end-of-day close; also pulled **DGS2_prev** (prior trading day's yield) to compute same-day yield change
+  - **DFF** (effective federal funds rate) — LLM scoring context for Phase 2
+  - **PCEPILFE** (core PCE inflation, converted to YoY % change), **UNRATE** (unemployment rate), **GDP growth** — macro context snapshots for Phase 2 LLM scoring; forward-filled to each speech date using the most recently *released* value as of that date (not the most recent reference period, which may not yet have been published)
+- Pulled FOMC meeting calendar from `federalreserve.gov` (**153 meeting dates**, 2008–2025) — used to flag speeches coinciding with a meeting day
+- Aligned all macro series to each speech date with no lookahead bias; output: `macro_context.csv` (242 rows, all columns fully populated)
 
-### Phase 1 — Preprocessing
-- Filter out speeches unrelated to monetary policy using a 2-stage LLM classifier
-- Anonymize speaker names so downstream LLM scoring isn't biased by known hawk/dove reputations
-- Attach the macro context (inflation, unemployment, etc.) that existed on each speech date
+### Phase 1 — Preprocessing ✅ complete
+- **Relevance filter:** 2-stage LLM classifier reduced corpus from **242 → 138 speeches** (104 excluded, 43%)
+  - Stage 1 (title keyword rules): 23 definite exclusions (commencement addresses, health-care reform, financial literacy programs, workforce development, etc.)
+  - Stage 2 (`claude-opus-4-7` on title + first 400 words): 81 further exclusions (generic welcoming/opening remarks, community banking supervision, foreclosure policy, social programs, etc.)
+- **FOMC-day check:** 2 speeches fell on FOMC meeting dates — both are major Jackson Hole speeches (Powell's 2020 AIT announcement and 2025 framework review); both kept since they contain substantive monetary policy content
+- Outputs: `speeches_filtered.csv` (all 242 with filter decisions) and `speeches_monetary_policy.csv` (138 kept)
+- **Deviation from original plan:** Speaker anonymization (originally listed here) is deferred — will be done immediately before Phase 2 pairwise scoring to keep the pipeline modular
+- Remaining: attach macro context from `macro_context.csv` to the filtered corpus before Phase 2
 
 ### Phase 2 — Hawkishness Scoring (unsupervised)
 - Run a pairwise tournament: present an LLM with two speeches side-by-side and ask which is more hawkish given the economic conditions at the time
@@ -73,17 +77,19 @@ data        filter       hawkishness  markets      write up
 fedspeak-project/
 ├── data/
 │   ├── raw/
-│   │   ├── speeches/          # one .txt file per speech
-│   │   └── fred/              # raw FRED series as CSV
+│   │   ├── speeches/                    # one .txt file per speech (242 total)
+│   │   └── fred/                        # raw FRED series as CSV
 │   └── processed/
-│       ├── speeches.csv        # manifest: date, chair, title, word_count, url, filename
-│       ├── macro_context.csv   # speeches + aligned macro snapshot (output of fetch_fred.py)
-│       └── fomc_calendar.csv   # FOMC announcement dates 2008–2025 (output of fetch_fomc.py)
+│       ├── speeches.csv                 # manifest: date, chair, title, word_count, url, filename
+│       ├── macro_context.csv            # speeches + aligned macro snapshot (output of fetch_fred.py)
+│       ├── fomc_calendar.csv            # FOMC announcement dates 2008–2025 (output of fetch_fomc.py)
+│       ├── speeches_filtered.csv        # all 242 with filter decisions (output of phase1_filter.py)
+│       └── speeches_monetary_policy.csv # 138 kept monetary-policy speeches (output of phase1_filter.py)
 ├── src/
-│   ├── scrape_speeches.py     # Phase 0: Fed speech scraper
-│   ├── fetch_fred.py          # Phase 0: FRED macro data + macro_context.csv
-│   ├── fetch_fomc.py          # Phase 0: FOMC meeting calendar scraper
-│   └── phase0_analysis.ipynb  # Summary stats + baseline regression
+│   ├── scrape_speeches.py               # Phase 0: Fed speech scraper
+│   ├── fetch_fred.py                    # Phase 0: FRED macro data + macro_context.csv
+│   ├── fetch_fomc.py                    # Phase 0: FOMC meeting calendar scraper
+│   └── phase1_filter.py                 # Phase 1: 2-stage LLM relevance filter
 ├── requirements.txt
 └── README.md
 ```
@@ -117,6 +123,13 @@ Requires a free FRED API key from [fred.stlouisfed.org](https://fred.stlouisfed.
 python src/fetch_fomc.py
 ```
 Scrapes FOMC announcement dates (2008–2025) from federalreserve.gov. No API key needed. Saves to `data/processed/fomc_calendar.csv`.
+
+### 5. Filter speeches (Phase 1)
+```bash
+export ANTHROPIC_API_KEY=your_key_here
+python src/phase1_filter.py
+```
+Requires an Anthropic API key from [console.anthropic.com](https://console.anthropic.com/settings/keys). Runs a 2-stage classifier (title keywords + `claude-opus-4-7`) to remove non-monetary-policy speeches. Outputs `speeches_filtered.csv` and `speeches_monetary_policy.csv`.
 
 ---
 
