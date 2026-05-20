@@ -76,10 +76,13 @@ fedspeak-project/
 │   │   ├── speeches/          # one .txt file per speech
 │   │   └── fred/              # raw FRED series as CSV
 │   └── processed/
-│       └── speeches.csv       # manifest: date, chair, title, word_count, url, filename
+│       ├── speeches.csv        # manifest: date, chair, title, word_count, url, filename
+│       ├── macro_context.csv   # speeches + aligned macro snapshot (output of fetch_fred.py)
+│       └── fomc_calendar.csv   # FOMC announcement dates 2008–2025 (output of fetch_fomc.py)
 ├── src/
 │   ├── scrape_speeches.py     # Phase 0: Fed speech scraper
-│   ├── fetch_fred.py          # Phase 0: FRED macro data fetcher (coming next)
+│   ├── fetch_fred.py          # Phase 0: FRED macro data + macro_context.csv
+│   ├── fetch_fomc.py          # Phase 0: FOMC meeting calendar scraper
 │   └── phase0_analysis.ipynb  # Summary stats + baseline regression
 ├── requirements.txt
 └── README.md
@@ -102,11 +105,18 @@ This will crawl `federalreserve.gov` year by year (2008–2025), filter for Fed 
 
 Runtime: ~20–40 minutes depending on connection speed (polite 1.2s delay per request).
 
-### 3. Fetch FRED macro data *(coming in Phase 0 Part 2)*
+### 3. Fetch FRED macro data
 ```bash
+export FRED_API_KEY=your_key_here
 python src/fetch_fred.py
 ```
-Requires a free FRED API key from [fred.stlouisfed.org](https://fred.stlouisfed.org/docs/api/api_key.html). Set it as an environment variable: `export FRED_API_KEY=your_key_here`.
+Requires a free FRED API key from [fred.stlouisfed.org](https://fred.stlouisfed.org/docs/api/api_key.html). Pulls DGS2, DFF, PCEPILFE, UNRATE, and GDP growth; saves raw CSVs to `data/raw/fred/` and writes an aligned macro snapshot to `data/processed/macro_context.csv`.
+
+### 4. Fetch FOMC meeting calendar
+```bash
+python src/fetch_fomc.py
+```
+Scrapes FOMC announcement dates (2008–2025) from federalreserve.gov. No API key needed. Saves to `data/processed/fomc_calendar.csv`.
 
 ---
 
