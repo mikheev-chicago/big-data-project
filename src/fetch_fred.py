@@ -81,11 +81,12 @@ def align_snapshot(speeches: pd.DataFrame, raw: dict) -> pd.DataFrame:
     pce_yoy.name = "PCE_YOY"
 
     lookup = {
-        "DGS2":       raw["DGS2"],
-        "DFF":        raw["DFF"],
-        "PCE_YOY":    pce_yoy,
-        "UNRATE":     raw["UNRATE"],
-        "GDP_GROWTH": raw["A191RL1Q225SBEA"],
+        "DGS2":       (raw["DGS2"],  0),   # yield on speech date
+        "DGS2_prev":  (raw["DGS2"], -1),   # yield on prior trading day (for computing day-of change)
+        "DFF":        (raw["DFF"],   0),
+        "PCE_YOY":    (pce_yoy,      0),
+        "UNRATE":     (raw["UNRATE"],0),
+        "GDP_GROWTH": (raw["A191RL1Q225SBEA"], 0),
     }
 
     speech_dates = speeches[["date"]].copy()
@@ -94,18 +95,20 @@ def align_snapshot(speeches: pd.DataFrame, raw: dict) -> pd.DataFrame:
 
     result = unique_dates.copy()
 
-    for col, s in lookup.items():
+    for col, (s, day_offset) in lookup.items():
         ref = s.dropna().reset_index()
         ref.columns = ["date", col]
         ref["date"] = pd.to_datetime(ref["date"])
-        # GDP: FRED dates observations at the START of the reference quarter,
-        # but the advance estimate isn't released until ~30 days after quarter END.
-        # Shift dates forward by 3 months + 30 days so the backward merge never
-        # attaches a GDP figure that wasn't publicly available yet.
         if col == "GDP_GROWTH":
             ref["date"] = ref["date"] + pd.DateOffset(months=3, days=30)
         ref = ref.sort_values("date")
-        merged = pd.merge_asof(unique_dates, ref, on="date", direction="backward")
+        # For DGS2_prev, look up against speech_date - 1 day so we get the
+        # last available yield strictly before the speech date.
+        lookup_dates = unique_dates.copy()
+        if day_offset == -1:
+            lookup_dates = lookup_dates.copy()
+            lookup_dates["date"] = lookup_dates["date"] - pd.Timedelta(days=1)
+        merged = pd.merge_asof(lookup_dates, ref, on="date", direction="backward")
         result[col] = merged[col].values
 
     return result
