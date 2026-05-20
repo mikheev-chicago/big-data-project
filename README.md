@@ -54,6 +54,58 @@ data        filter       hawkishness  markets      write up
 
 ---
 
+## Experiment 0 — Simple Hawk/Dove Yield Test (First Deliverable)
+
+Before running the full pipeline, we run a bare-bones sanity check: **do hawkish speeches push the 2-year yield up on the day they're delivered, and dovish speeches push it down?** No ML, no embeddings — just a lexicon score, a rank, and a direction call.
+
+### Regimes
+
+Each Fed Chair is treated as a separate regime and analyzed independently:
+
+| Regime | Chair | Period |
+|--------|-------|--------|
+| A | Ben S. Bernanke | 2008–2014 |
+| B | Janet L. Yellen | 2014–2018 |
+| C | Jerome H. Powell | 2018–2025 |
+
+### Scoring: Loughran-McDonald Lexicon
+
+Each speech is scored using the [Loughran-McDonald Master Dictionary](https://sraf.nd.edu/loughranmcdonald-master-dictionary/) — a financial-domain sentiment lexicon with explicit hawkish and dovish word lists (built for finance, not general text).
+
+```
+score = (hawkish_word_count − dovish_word_count) / total_words
+```
+
+Higher score = more hawkish language. Scores are computed per speech and are comparable within each regime.
+
+### Ranking & Bucketing
+
+Within each regime, speeches are ranked by score and divided into three equal buckets:
+
+- **Bottom third → Dovish**
+- **Middle third → Neutral**
+- **Top third → Hawkish**
+
+### Yield Test
+
+For each speech, compute the same-day 2-year Treasury yield change:
+
+```
+yield_change = DGS2 (close, speech day) − DGS2 (close, prior trading day)
+```
+
+Prediction: Hawkish → yield rises. Dovish → yield falls. Neutral speeches are excluded from accuracy scoring (no directional prediction made).
+
+Accuracy is reported per regime and overall.
+
+### Data Notes
+
+- Built on top of `speeches_filtered.csv` from Phase 1 (242 speeches with filter decisions)
+- **6 evening/dinner speeches excluded** from the yield test — these were delivered after market close, so the same-day yield change cannot reflect the speech. Breakdown: 5 Bernanke, 1 Powell
+- Yield data: `DGS2` and `DGS2_prev` from `macro_context.csv` (already collected in Phase 0, no lookahead bias)
+
+---
+
 ## Data Sources
 
 | Source | Description | Series |
