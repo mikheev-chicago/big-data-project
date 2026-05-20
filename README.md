@@ -212,7 +212,3 @@ The scraper does not capture the time of day each speech was delivered. Ideally,
 *[To be filled in per the course requirement — list each group member's contribution here before the May 26 submission.]*
 
 ---
-
-## Honor Code
-
-AI tools were used to assist with data collection, feature engineering, and code writing, in accordance with course guidelines. All group members can explain each line of code. The written report was not AI-generated.
