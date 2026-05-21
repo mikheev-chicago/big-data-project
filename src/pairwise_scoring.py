@@ -179,3 +179,60 @@ def compute_trueskill(
         df["hawkishness_phase2"] = 50.0
 
     return df
+
+
+async def filter_sentences_batch(
+    sentences: list[str],
+    client: anthropic.AsyncAnthropic,
+    semaphore: asyncio.Semaphore,
+) -> list[int]:
+    """
+    Classify a batch of sentences. Returns 0-based indices of those that
+    discuss monetary policy, inflation, employment, or economic growth.
+    Falls back to including all indices if the API fails or returns bad JSON.
+    """
+    numbered = "\n".join(f"{i}. {s}" for i, s in enumerate(sentences))
+    async with semaphore:
+        for attempt in range(3):
+            try:
+                resp = await client.messages.create(
+                    model=FILTER_MODEL,
+                    max_tokens=256,
+                    system=FILTER_SYSTEM,
+                    messages=[{"role": "user", "content": numbered}],
+                )
+                indices = json.loads(resp.content[0].text.strip())
+                return [i for i in indices if 0 <= i < len(sentences)]
+            except (json.JSONDecodeError, ValueError):
+                if attempt == 2:
+                    return list(range(len(sentences)))
+                await asyncio.sleep(2 ** attempt)
+            except anthropic.APIError:
+                if attempt == 2:
+                    return list(range(len(sentences)))
+                await asyncio.sleep(2 ** attempt)
+    return list(range(len(sentences)))
+
+
+async def filter_all_sentences(
+    df: pd.DataFrame,
+    client: anthropic.AsyncAnthropic,
+    semaphore: asyncio.Semaphore,
+) -> pd.DataFrame:
+    """
+    Run the sentence filter across the full DataFrame in batches of BATCH_SIZE.
+    Dispatches all batches concurrently (semaphore limits to MAX_CONCURRENT calls).
+    Returns a filtered DataFrame with only monetary-policy relevant rows.
+    """
+    sentences = df["text"].tolist()
+    batches = [sentences[i:i + BATCH_SIZE] for i in range(0, len(sentences), BATCH_SIZE)]
+    batch_starts = list(range(0, len(sentences), BATCH_SIZE))
+
+    tasks = [filter_sentences_batch(batch, client, semaphore) for batch in batches]
+    batch_results = await asyncio.gather(*tasks)
+
+    keep_positions: list[int] = []
+    for start, indices in zip(batch_starts, batch_results):
+        keep_positions.extend(start + i for i in indices)
+
+    return df.iloc[sorted(keep_positions)].reset_index(drop=True)

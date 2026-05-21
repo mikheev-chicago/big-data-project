@@ -159,3 +159,62 @@ def test_trueskill_skips_null_winners():
     })
     out = compute_trueskill(results, ["a.txt", "b.txt", "c.txt"])
     assert len(out) == 3
+
+
+from pairwise_scoring import filter_sentences_batch, filter_all_sentences
+
+
+async def test_filter_batch_returns_indices():
+    """Returns 0-based indices of monetary-policy relevant sentences."""
+    mock_client = MagicMock()
+    mock_content = MagicMock()
+    mock_content.text = "[0, 2]"
+    mock_response = MagicMock()
+    mock_response.content = [mock_content]
+    mock_client.messages.create = AsyncMock(return_value=mock_response)
+
+    sem = asyncio.Semaphore(1)
+    result = await filter_sentences_batch(
+        sentences=["tighten rates now", "bank supervision rules", "inflation above target"],
+        client=mock_client,
+        semaphore=sem,
+    )
+    assert result == [0, 2]
+
+
+async def test_filter_batch_bad_json_returns_all():
+    """On JSON parse failure, conservatively includes all sentences."""
+    mock_client = MagicMock()
+    mock_content = MagicMock()
+    mock_content.text = "not valid json"
+    mock_response = MagicMock()
+    mock_response.content = [mock_content]
+    mock_client.messages.create = AsyncMock(return_value=mock_response)
+
+    sem = asyncio.Semaphore(1)
+    result = await filter_sentences_batch(["a", "b", "c"], mock_client, sem)
+    assert result == [0, 1, 2]
+
+
+async def test_filter_all_sentences_keeps_correct_rows():
+    """filter_all_sentences returns only rows whose index was returned by the classifier."""
+    df = pd.DataFrame({
+        "filename":     ["a.txt"] * 4,
+        "date":         ["2010-01-01"] * 4,
+        "text":         ["monetary policy rates", "bank regulation rules",
+                         "inflation above target", "stress test capital"],
+        "damped_lemmas":["monetary policy rates", "bank regulation rules",
+                         "inflation above target", "stress test capital"],
+        "title":        ["Speech A"] * 4,
+    })
+    mock_client = MagicMock()
+    mock_content = MagicMock()
+    mock_content.text = "[0, 2]"
+    mock_response = MagicMock()
+    mock_response.content = [mock_content]
+    mock_client.messages.create = AsyncMock(return_value=mock_response)
+
+    sem = asyncio.Semaphore(1)
+    result = await filter_all_sentences(df, mock_client, sem)
+    assert len(result) == 2
+    assert list(result["text"]) == ["monetary policy rates", "inflation above target"]
