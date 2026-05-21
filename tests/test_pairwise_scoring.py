@@ -225,11 +225,13 @@ from pairwise_scoring import compare_pair
 _REPR_A = {
     "damped_lemmas": "tighten rate inflation elevated",
     "date": "2022-06-15",
+    "title": "Speech A",
     "DFF": 1.58, "PCE_YOY": 6.3, "UNRATE": 3.6, "GDP_GROWTH": -1.6,
 }
 _REPR_B = {
     "damped_lemmas": "ease accommodate patient gradual",
     "date": "2019-07-31",
+    "title": "Speech B",
     "DFF": 2.40, "PCE_YOY": 1.6, "UNRATE": 3.7, "GDP_GROWTH": 2.1,
 }
 

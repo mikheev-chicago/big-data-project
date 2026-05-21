@@ -202,6 +202,8 @@ async def filter_sentences_batch(
                     messages=[{"role": "user", "content": numbered}],
                 )
                 indices = json.loads(resp.content[0].text.strip())
+                if not isinstance(indices, list):
+                    raise ValueError("expected JSON array")
                 return [i for i in indices if 0 <= i < len(sentences)]
             except (json.JSONDecodeError, ValueError):
                 if attempt == 2:
@@ -313,6 +315,7 @@ async def run_tournament(
         pairs = [(a, b) for a, b in pairs if frozenset([a, b]) not in done]
         log.info(f"  Resuming: {len(results)} done, {len(pairs)} remaining")
 
+    total_new = len(pairs)  # updated after removing already-done pairs
     tasks = [
         compare_pair(a, b, representations[a], representations[b], client, semaphore)
         for a, b in pairs
@@ -325,7 +328,7 @@ async def run_tournament(
         completed += 1
         if completed % 200 == 0:
             pd.DataFrame(results).to_csv(results_path, index=False)
-            log.info(f"  Progress: {completed}/{len(pairs)} comparisons")
+            log.info(f"  Progress: {completed}/{total_new} comparisons")
 
     pd.DataFrame(results).to_csv(results_path, index=False)
     return pd.DataFrame(results)
