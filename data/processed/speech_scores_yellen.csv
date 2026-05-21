@@ -1,0 +1,23 @@
+filename,date,title,raw_score,n_lemmas_total,label,rank
+20140331_yellen_What_the_Federal_Reserve_Is_Doing_to_Promote_a_Stronger_Job_.txt,2014-03-31,What the Federal Reserve Is Doing to Promote a Stronger Job Market,-0.011904761904761904,1932.0,Neutral,11
+20140416_yellen_Monetary_Policy_and_the_Economic_Recovery.txt,2014-04-16,Monetary Policy and the Economic Recovery,-0.017662532882375046,2661.0,Dovish,6
+20140515_yellen_Small_Businesses_and_the_Recovery.txt,2014-05-15,Small Businesses and the Recovery,0.0,258.0,Hawkish,19
+20140702_yellen_Monetary_Policy_and_Financial_Stability.txt,2014-07-02,Monetary Policy and Financial Stability,0.011106997408367271,2701.0,Hawkish,22
+20140822_yellen_Labor_Market_Dynamics_and_Monetary_Policy.txt,2014-08-22,Labor Market Dynamics and Monetary Policy,-0.009424436216762033,2971.0,Neutral,14
+20141107_yellen_Remarks_at_the_Panel_Discussion_on_Shaping_the_Future_of_the.txt,2014-11-07,"Remarks at the Panel Discussion on ""Shaping the Future of the Macroeconomic Policy Mix""",-0.0171990171990172,814.0,Dovish,7
+20150327_yellen_Normalizing_Monetary_Policy_Prospects_and_Perspectives.txt,2015-03-27,Normalizing Monetary Policy:  Prospects and Perspectives,-0.009720176730486009,3395.0,Neutral,13
+20150522_yellen_The_Outlook_for_the_Economy.txt,2015-05-22,The Outlook for the Economy,-0.017837235228539576,1794.0,Dovish,5
+20150710_yellen_Recent_Developments_and_the_Outlook_for_the_Economy.txt,2015-07-10,Recent Developments and the Outlook for the Economy,-0.016651248843663275,2162.0,Neutral,9
+20150924_yellen_Inflation_Dynamics_and_Monetary_Policy.txt,2015-09-24,Inflation Dynamics and Monetary Policy,-0.006736394256337529,5641.0,Hawkish,17
+20151202_yellen_The_Economic_Outlook_and_Monetary_Policy.txt,2015-12-02,The Economic Outlook and Monetary Policy,-0.0125,2720.0,Neutral,10
+20160329_yellen_The_Outlook_Uncertainty_and_Monetary_Policy.txt,2016-03-29,"The Outlook, Uncertainty, and Monetary Policy",-0.020385050962627407,2649.0,Dovish,1
+20160606_yellen_Current_Conditions_and_the_Outlook_for_the_US_Economy.txt,2016-06-06,Current Conditions and the Outlook for the U.S. Economy,-0.01951951951951952,2664.0,Dovish,3
+20160826_yellen_The_Federal_Reserves_Monetary_Policy_Toolkit_Past_Present_an.txt,2016-08-26,"The Federal Reserve's Monetary Policy Toolkit: Past, Present, and Future",-0.010907003444316877,3484.0,Neutral,12
+20161014_yellen_Macroeconomic_Research_After_the_Crisis.txt,2016-10-14,Macroeconomic Research After the Crisis,0.0011750881316098707,3404.0,Hawkish,20
+20170118_yellen_The_Goals_of_Monetary_Policy_and_How_We_Pursue_Them.txt,2017-01-18,The Goals of Monetary Policy and How We Pursue Them,-0.01680672268907563,1428.0,Dovish,8
+20170119_yellen_The_Economic_Outlook_and_the_Conduct_of_Monetary_Policy.txt,2017-01-19,The Economic Outlook and the Conduct of Monetary Policy,-0.007772020725388601,3474.0,Hawkish,16
+20170303_yellen_From_Adding_Accommodation_to_Scaling_It_Back.txt,2017-03-03,From Adding Accommodation to Scaling It Back,-0.018747337025990626,2347.0,Dovish,4
+20170825_yellen_Financial_Stability_a_Decade_after_the_Onset_of_the_Crisis.txt,2017-08-25,Financial Stability a Decade after the Onset of the Crisis,0.0012813941568426447,3902.0,Hawkish,21
+20170926_yellen_Inflation_Uncertainty_and_Monetary_Policy.txt,2017-09-26,"Inflation, Uncertainty, and Monetary Policy",-0.007957559681697613,4524.0,Hawkish,15
+20171015_yellen_The_US_Economy_and_Monetary_Policy.txt,2017-10-15,The U.S. Economy and Monetary Policy,-0.005605381165919282,892.0,Hawkish,18
+20171020_yellen_A_Challenging_Decade_and_a_Question_for_the_Future.txt,2017-10-20,A Challenging Decade and a Question for the Future,-0.01971476510067114,2384.0,Dovish,2

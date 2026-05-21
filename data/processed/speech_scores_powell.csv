@@ -1,0 +1,46 @@
+filename,date,title,raw_score,n_lemmas_total,label,rank
+20180406_powell_The_Outlook_for_the_US_Economy.txt,2018-04-06,The Outlook for the U.S. Economy,-0.012212994626282364,2047.0,Neutral,17
+20180508_powell_Monetary_Policy_Influences_on_Global_Financial_Conditions_an.txt,2018-05-08,Monetary Policy Influences on Global Financial Conditions and International Capital Flows,0.00397456279809221,1258.0,Hawkish,36
+20180525_powell_Financial_Stability_and_Central_Bank_Transparency.txt,2018-05-25,Financial Stability and Central Bank Transparency,0.00682261208576998,1026.0,Hawkish,38
+20180620_powell_Monetary_Policy_at_a_Time_of_Uncertainty_and_Tight_Labor_Mar.txt,2018-06-20,Monetary Policy at a Time of Uncertainty and Tight Labor Markets,-0.008146639511201629,982.0,Neutral,23
+20180824_powell_Monetary_Policy_in_a_Changing_Economy.txt,2018-08-24,Monetary Policy in a Changing Economy,-0.004758128469468675,2522.0,Neutral,27
+20180927_powell_Brief_Remarks_on_the_US_Economy.txt,2018-09-27,Brief Remarks on the U.S. Economy,-0.0182648401826484,219.0,Dovish,8
+20181002_powell_Monetary_Policy_and_Risk_Management_at_a_Time_of_Low_Inflati.txt,2018-10-02,Monetary Policy and Risk Management at a Time of Low Inflation and Low Unemployment,-0.005941499085923218,2188.0,Neutral,26
+20181128_powell_The_Federal_Reserves_Framework_for_Monitoring_Financial_Stab.txt,2018-11-28,The Federal Reserve's Framework for Monitoring Financial Stability,-0.0018527095877721167,2159.0,Neutral,30
+20190228_powell_Recent_Economic_Developments_and_Longer-Term_Challenges.txt,2019-02-28,Recent Economic Developments and Longer-Term Challenges,-0.018361581920903956,1416.0,Dovish,7
+20190308_powell_Monetary_Policy_Normalization_and_the_Road_Ahead.txt,2019-03-08,Monetary Policy: Normalization and the Road Ahead,-0.008325624421831638,2162.0,Neutral,22
+20190520_powell_Business_Debt_and_Our_Dynamic_Financial_System.txt,2019-05-20,Business Debt and Our Dynamic Financial System,0.0066518847006651885,1804.0,Hawkish,37
+20190604_powell_Opening_Remarks.txt,2019-06-04,Opening Remarks,-0.014742014742014743,1628.0,Dovish,12
+20190625_powell_Economic_Outlook_and_Monetary_Policy_Review.txt,2019-06-25,Economic Outlook and Monetary Policy Review,-0.01775147928994083,676.0,Dovish,10
+20190716_powell_Monetary_Policy_in_the_Post-Crisis_Era.txt,2019-07-16,Monetary Policy in the Post-Crisis Era,-0.012872083668543845,1243.0,Neutral,16
+20190823_powell_Challenges_for_Monetary_Policy.txt,2019-08-23,Challenges for Monetary Policy,-0.01995133819951338,2055.0,Dovish,6
+20191004_powell_Opening_Remarks.txt,2019-10-04,Opening Remarks,-0.03412073490813648,381.0,Dovish,2
+20191008_powell_Data-Dependent_Monetary_Policy_in_an_Evolving_Economy.txt,2019-10-08,Data-Dependent Monetary Policy in an Evolving Economy,-0.0014285714285714286,2100.0,Hawkish,32
+20191009_powell_Opening_Remarks.txt,2019-10-09,Opening Remarks,-0.03896103896103896,308.0,Dovish,1
+20191125_powell_Building_on_the_Gains_from_the_Long_Expansion.txt,2019-11-25,Building on the Gains from the Long Expansion,-0.01795472287275566,1281.0,Dovish,9
+20200409_powell_COVID-19_and_the_Economy.txt,2020-04-09,COVID-19 and the Economy,-0.014457831325301205,415.0,Dovish,13
+20200513_powell_Current_Economic_Issues.txt,2020-05-13,Current Economic Issues,-0.013623978201634877,734.0,Dovish,15
+20200827_powell_New_Economic_Challenges_and_the_Feds_Monetary_Policy_Review.txt,2020-08-27,New Economic Challenges and the Fed's Monetary Policy Review,-0.008976660682226212,2785.0,Neutral,20
+20201006_powell_Recent_Economic_Developments_and_the_Challenges_Ahead.txt,2020-10-06,Recent Economic Developments and the Challenges Ahead,-0.02146690518783542,1118.0,Dovish,5
+20210210_powell_Getting_Back_to_a_Strong_Labor_Market.txt,2021-02-10,Getting Back to a Strong Labor Market,0.003838771593090211,1563.0,Hawkish,35
+20210827_powell_Monetary_Policy_in_the_Time_of_COVID.txt,2021-08-27,Monetary Policy in the Time of COVID,0.0,1936.0,Hawkish,34
+20220321_powell_Restoring_Price_Stability.txt,2022-03-21,Restoring Price Stability,0.00975609756097561,1435.0,Hawkish,42
+20220826_powell_Monetary_Policy_and_Price_Stability.txt,2022-08-26,Monetary Policy and Price Stability,-0.001379310344827586,725.0,Hawkish,33
+20221130_powell_Inflation_and_the_Labor_Market.txt,2022-11-30,Inflation and the Labor Market,-0.00875,1600.0,Neutral,21
+20230110_powell_Panel_on_Central_Bank_Independence_and_the_MandateâEvolving_.txt,2023-01-10,"Panel on ""Central Bank Independence and the MandateâEvolving Views""",-0.006220839813374806,643.0,Neutral,25
+20230629_powell_Financial_Stability_and_Economic_Developments.txt,2023-06-29,Financial Stability and Economic Developments,0.011737089201877934,852.0,Hawkish,43
+20230825_powell_Inflation_Progress_and_the_Path_Ahead.txt,2023-08-25,Inflation:  Progress and the Path Ahead,0.00759144237405107,1449.0,Hawkish,39
+20231019_powell_Opening_Remarks.txt,2023-10-19,Opening Remarks,0.026825633383010434,671.0,Hawkish,45
+20231109_powell_Opening_Remarks.txt,2023-11-09,Opening Remarks,0.009298393913778529,1183.0,Hawkish,41
+20231201_powell_Opening_Remarks.txt,2023-12-01,Opening Remarks,0.018292682926829267,820.0,Hawkish,44
+20240403_powell_Opening_Remarks.txt,2024-04-03,Opening Remarks,-0.001430615164520744,699.0,Hawkish,31
+20240823_powell_Review_and_Outlook.txt,2024-08-23,Review and Outlook,0.007618080243778568,1969.0,Hawkish,40
+20240930_powell_Economic_Outlook.txt,2024-09-30,Economic Outlook,-0.002421307506053269,413.0,Neutral,29
+20241114_powell_Economic_Outlook.txt,2024-11-14,Economic Outlook,-0.00631578947368421,475.0,Neutral,24
+20250307_powell_Economic_Outlook.txt,2025-03-07,Economic Outlook,-0.017094017094017096,468.0,Dovish,11
+20250404_powell_Economic_Outlook.txt,2025-04-04,Economic Outlook,-0.022675736961451247,441.0,Dovish,4
+20250416_powell_Economic_Outlook.txt,2025-04-16,Economic Outlook,-0.013729977116704805,437.0,Dovish,14
+20250515_powell_Opening_Remarks.txt,2025-05-15,Opening Remarks,-0.026517794836008374,1433.0,Dovish,3
+20250822_powell_Monetary_Policy_and_the_Fedâs_Framework_Review.txt,2025-08-22,Monetary Policy and the Fedâs Framework Review,-0.012042612320518759,2159.0,Neutral,18
+20250923_powell_Economic_Outlook.txt,2025-09-23,Economic Outlook,-0.011647254575707155,601.0,Neutral,19
+20251014_powell_Understanding_the_Fedâs_Balance_Sheet.txt,2025-10-14,Understanding the Fedâs Balance Sheet,-0.00258732212160414,2319.0,Neutral,28

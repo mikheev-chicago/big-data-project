@@ -152,6 +152,42 @@ Two outputs are saved per regime:
 
 ---
 
+### Step 5 — Dictionary-based hawkishness scoring ✅ complete
+
+**Script:** `src/score_hawkishness.py`
+
+We score each speech using a hawk/dove word list from Apel & Blix Grimaldi (2014), a paper on measuring central bank tone. Unlike generic finance dictionaries (like Loughran-McDonald, which was built for corporate filings and classifies "tighten" and "ease" as identically *negative*), this word list was designed specifically for central bank communication. Each word is tagged as hawkish (+1) or dovish (-1). Examples:
+
+| Word | Polarity | Why |
+|------|----------|-----|
+| tighten, hike, elevated, restrictive | +1 hawkish | signal rates should rise |
+| ease, accommodative, patient, gradual | -1 dovish | signal rates should hold or fall |
+
+**How scoring works:**
+
+1. **Fragment score:** For each sentence fragment, count how many lemmas appear in the word list, sum their polarities, and divide by the total number of words in the fragment. Dividing by length means we measure the *density* of hawk/dove signal — a long speech that mentions "tighten" once shouldn't outscore a short fragment where it's the main point.
+
+2. **Speech score:** Average all fragment scores for a speech, weighted by fragment length (longer fragments count more).
+
+3. **Labels within regime:** Within each Chair's speeches, sort by score and split into equal thirds — bottom third = **Dovish**, middle = **Neutral**, top = **Hawkish**. We rank within each regime rather than using a global cutoff because absolute score levels aren't comparable across eras (Bernanke operated during near-zero rates and QE; Powell during a tightening cycle).
+
+**Yield direction test:**
+
+For each Hawkish or Dovish speech (Neutral excluded), we check whether the 2-year Treasury yield moved in the predicted direction on the speech day (same-day close minus prior day's close). Speeches delivered after market close are excluded since the market couldn't have responded that day.
+
+| Regime | Correct / Total | Accuracy |
+|--------|----------------|----------|
+| Bernanke | 19/48 | 39.6% |
+| Yellen | 6/16 | 37.5% |
+| Powell | 14/30 | 46.7% |
+| **Overall** | **39/94** | **41.5%** |
+
+**Result: below coin-flip (50%).** The main limitation is that a word list can't distinguish context. Words like *firm*, *resilient*, and *elevated* appear in both monetary policy speeches ("labor market is firming") and financial regulation speeches ("we need firm oversight") — the latter have nothing to do with rate direction. Bernanke's top-scored "hawkish" speeches turned out to be financial stability talks from 2008–2009, not monetary policy statements. This result motivates moving to LLM-based pairwise scoring (Phase 2), which can read the actual meaning of a sentence rather than matching isolated words.
+
+Outputs: `speech_scores_{chair}.csv` (per-speech scores, labels, yield data), `yield_results_abg.csv` (accuracy summary).
+
+---
+
 ## Data Sources
 
 | Source | Description | Series |
@@ -186,13 +222,16 @@ fedspeak-project/
 │       ├── speeches_{chair}.csv             # per-regime corpus (bernanke / yellen / powell)
 │       ├── sentences_{chair}.csv            # sentence fragments + lemmas + damped_lemmas
 │       ├── idf_weights_{chair}.csv          # lemma → doc_freq → multiplier lookup table
+│       ├── speech_scores_{chair}.csv        # per-speech hawkishness score, label, yield data
+│       └── yield_results_abg.csv            # accuracy summary: correct/total per regime
 ├── src/
 │   ├── scrape_speeches.py                   # Phase 0: Fed speech scraper
 │   ├── fetch_fred.py                        # Phase 0: FRED macro data + macro_context.csv
 │   ├── fetch_fomc.py                        # Phase 0: FOMC meeting calendar scraper
 │   ├── phase1_filter.py                     # Phase 1: 2-stage LLM relevance filter
 │   ├── build_sentence_corpus.py             # Experiment 1 step 2: sentence tokenization + splitting
-│   └── lemmatize_and_damp.py               # Experiment 1 steps 3–4: lemmatization + IDF damping
+│   ├── lemmatize_and_damp.py               # Experiment 1 steps 3–4: lemmatization + IDF damping
+│   └── score_hawkishness.py                # Experiment 1 step 5: A&BG dictionary scoring + yield test
 ├── requirements.txt
 └── README.md
 ```
