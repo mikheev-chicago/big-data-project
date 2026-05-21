@@ -134,3 +134,48 @@ def build_speech_representations(
         }
         for _, row in merged.iterrows()
     }
+
+
+def compute_trueskill(
+    results_df: pd.DataFrame,
+    filenames: list[str],
+) -> pd.DataFrame:
+    """
+    Feed pairwise outcomes into TrueSkill and return per-speech scores.
+
+    draw_probability=0 because the LLM always picks A or B.
+    Rows where winner is null/NaN are skipped.
+    hawkishness_phase2 is min-max normalized to [0, 100] within this regime.
+
+    Returns a DataFrame with columns:
+        filename, trueskill_mu, trueskill_sigma, hawkishness_phase2
+    """
+    env = trueskill.TrueSkill(draw_probability=0.0)
+    ratings = {f: env.create_rating() for f in filenames}
+
+    for _, row in results_df.iterrows():
+        winner = row["winner"]
+        if winner is None or (isinstance(winner, float) and pd.isna(winner)):
+            continue
+        a, b = row["filename_a"], row["filename_b"]
+        if winner == a:
+            ratings[a], ratings[b] = env.rate_1vs1(ratings[a], ratings[b])
+        else:
+            ratings[b], ratings[a] = env.rate_1vs1(ratings[b], ratings[a])
+
+    rows = [
+        {"filename": f, "trueskill_mu": r.mu, "trueskill_sigma": r.sigma}
+        for f, r in ratings.items()
+    ]
+    df = pd.DataFrame(rows)
+
+    mu_min = df["trueskill_mu"].min()
+    mu_max = df["trueskill_mu"].max()
+    if mu_max > mu_min:
+        df["hawkishness_phase2"] = (
+            (df["trueskill_mu"] - mu_min) / (mu_max - mu_min) * 100
+        )
+    else:
+        df["hawkishness_phase2"] = 50.0
+
+    return df

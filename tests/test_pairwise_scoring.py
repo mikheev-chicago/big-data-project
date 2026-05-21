@@ -108,3 +108,54 @@ def test_build_representations_drops_missing_macro():
     reps = build_speech_representations(filtered, macro)
     assert "b.txt" not in reps
     assert "a.txt" in reps
+
+
+from pairwise_scoring import compute_trueskill
+
+
+def test_trueskill_output_shape():
+    """Returns one row per filename with required columns."""
+    results = pd.DataFrame({
+        "filename_a": ["a.txt", "b.txt", "a.txt"],
+        "filename_b": ["b.txt", "c.txt", "c.txt"],
+        "winner":     ["a.txt", "b.txt", "a.txt"],
+    })
+    out = compute_trueskill(results, ["a.txt", "b.txt", "c.txt"])
+    assert set(out.columns) >= {"filename", "trueskill_mu", "trueskill_sigma", "hawkishness_phase2"}
+    assert len(out) == 3
+
+
+def test_trueskill_scores_in_range():
+    """hawkishness_phase2 values are in [0, 100]."""
+    results = pd.DataFrame({
+        "filename_a": ["a.txt"] * 5 + ["b.txt"] * 4 + ["c.txt"] * 3,
+        "filename_b": ["b.txt"] * 5 + ["c.txt"] * 4 + ["a.txt"] * 3,
+        "winner":     ["a.txt"] * 5 + ["b.txt"] * 4 + ["a.txt"] * 3,
+    })
+    out = compute_trueskill(results, ["a.txt", "b.txt", "c.txt"])
+    assert out["hawkishness_phase2"].min() >= 0.0
+    assert out["hawkishness_phase2"].max() <= 100.0
+
+
+def test_trueskill_consistent_winner_ranks_higher():
+    """Speech that wins every comparison gets a higher score than the one that loses every time."""
+    results = pd.DataFrame({
+        "filename_a": ["a.txt"] * 10,
+        "filename_b": ["b.txt"] * 10,
+        "winner":     ["a.txt"] * 10,
+    })
+    out = compute_trueskill(results, ["a.txt", "b.txt"])
+    score_a = out.loc[out["filename"] == "a.txt", "hawkishness_phase2"].iloc[0]
+    score_b = out.loc[out["filename"] == "b.txt", "hawkishness_phase2"].iloc[0]
+    assert score_a > score_b
+
+
+def test_trueskill_skips_null_winners():
+    """Rows where winner is None or NaN are skipped without crashing."""
+    results = pd.DataFrame({
+        "filename_a": ["a.txt", "b.txt"],
+        "filename_b": ["b.txt", "c.txt"],
+        "winner":     ["a.txt", None],
+    })
+    out = compute_trueskill(results, ["a.txt", "b.txt", "c.txt"])
+    assert len(out) == 3
