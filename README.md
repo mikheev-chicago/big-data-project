@@ -54,67 +54,15 @@ data        filter       hawkishness  markets      write up
 
 ---
 
-## Experiment 0 — Simple Hawk/Dove Yield Test (First Deliverable)
+## Experiment 1 — Improved Hawk/Dove Scoring Methodology (In Progress)
 
-Before running the full pipeline, we run a bare-bones sanity check: **do hawkish speeches push the 2-year yield up on the day they're delivered, and dovish speeches push it down?** No ML, no embeddings — just a lexicon score, a rank, and a direction call.
-
-### Regimes
-
-Each Fed Chair is treated as a separate regime and analyzed independently:
-
-| Regime | Chair | Period |
-|--------|-------|--------|
-| A | Ben S. Bernanke | 2008–2014 |
-| B | Janet L. Yellen | 2014–2018 |
-| C | Jerome H. Powell | 2018–2025 |
-
-### Scoring: Loughran-McDonald Lexicon
-
-Each speech is scored using the [Loughran-McDonald Master Dictionary](https://sraf.nd.edu/loughranmcdonald-master-dictionary/) — a financial-domain sentiment lexicon with explicit hawkish and dovish word lists (built for finance, not general text).
-
-```
-score = (hawkish_word_count − dovish_word_count) / total_words
-```
-
-Higher score = more hawkish language. Scores are computed per speech and are comparable within each regime.
-
-### Ranking & Bucketing
-
-Within each regime, speeches are ranked by score and divided into three equal buckets:
-
-- **Bottom third → Dovish**
-- **Middle third → Neutral**
-- **Top third → Hawkish**
-
-### Yield Test
-
-For each speech, compute the same-day 2-year Treasury yield change:
-
-```
-yield_change = DGS2 (close, speech day) − DGS2 (close, prior trading day)
-```
-
-Prediction: Hawkish → yield rises. Dovish → yield falls. Neutral speeches are excluded from accuracy scoring (no directional prediction made).
-
-Accuracy is reported per regime and overall.
-
-### Data Notes
-
-- Built on top of `speeches_filtered.csv` from Phase 1 (242 speeches with filter decisions)
-- **6 evening/dinner speeches excluded** from the yield test — these were delivered after market close, so the same-day yield change cannot reflect the speech. Breakdown: 5 Bernanke, 1 Powell
-- Yield data: `DGS2` and `DGS2_prev` from `macro_context.csv` (already collected in Phase 0, no lookahead bias)
-
----
-
-## Experiment 1 — Improved Lexicon Methodology (In Progress)
-
-Experiment 0 showed that applying the Loughran-McDonald lexicon directly to whole speeches doesn't reliably predict yield direction (42% overall — worse than a coin flip). The main problems were:
+The goal of this experiment is to score each speech as hawkish or dovish more accurately than a generic financial sentiment dictionary can. Three problems motivated building a custom pipeline from scratch:
 
 1. **Whole-speech scoring is too blurry.** A single speech might say "the labor market is strong" in one sentence and "but inflation has fallen short of our target" in the next. Scoring the whole thing as one unit averages out the signal.
 2. **Common words drown out the signal.** Words like "economy", "market", "federal", and "rate" appear in nearly every speech and add noise without carrying any hawk/dove information.
-3. **Word forms aren't unified.** "Tightening", "tightened", and "tightens" are treated as three different words even though they mean the same thing.
+3. **Generic financial lexicons are the wrong tool.** The Loughran-McDonald dictionary (built for corporate 10-K filings) classifies "tighten", "ease", and "cut" all as Negative — because in a corporate context those words describe bad things happening to a company. In Fed speeches they mean specific policy directions. A word list built for the right domain is needed.
 
-This experiment rebuilds the scoring pipeline from scratch at the sentence level, with careful text preprocessing to address all three problems.
+The preprocessing steps below (1–4) prepare the corpus for a custom monetary-policy scoring approach.
 
 ---
 
@@ -238,14 +186,11 @@ fedspeak-project/
 │       ├── speeches_{chair}.csv             # per-regime corpus (bernanke / yellen / powell)
 │       ├── sentences_{chair}.csv            # sentence fragments + lemmas + damped_lemmas
 │       ├── idf_weights_{chair}.csv          # lemma → doc_freq → multiplier lookup table
-│       ├── chair_{a|b|c}_rankings.csv       # anonymized hawk/dove rankings (Experiment 0)
-│       └── experiment0_yield_results.csv    # per-speech yield direction test results
 ├── src/
 │   ├── scrape_speeches.py                   # Phase 0: Fed speech scraper
 │   ├── fetch_fred.py                        # Phase 0: FRED macro data + macro_context.csv
 │   ├── fetch_fomc.py                        # Phase 0: FOMC meeting calendar scraper
 │   ├── phase1_filter.py                     # Phase 1: 2-stage LLM relevance filter
-│   ├── experiment0_yield_test.py            # Experiment 0: LM lexicon scoring + yield test
 │   ├── build_sentence_corpus.py             # Experiment 1 step 2: sentence tokenization + splitting
 │   └── lemmatize_and_damp.py               # Experiment 1 steps 3–4: lemmatization + IDF damping
 ├── requirements.txt
