@@ -218,3 +218,61 @@ async def test_filter_all_sentences_keeps_correct_rows():
     result = await filter_all_sentences(df, mock_client, sem)
     assert len(result) == 2
     assert list(result["text"]) == ["monetary policy rates", "inflation above target"]
+
+
+from pairwise_scoring import compare_pair
+
+_REPR_A = {
+    "damped_lemmas": "tighten rate inflation elevated",
+    "date": "2022-06-15",
+    "DFF": 1.58, "PCE_YOY": 6.3, "UNRATE": 3.6, "GDP_GROWTH": -1.6,
+}
+_REPR_B = {
+    "damped_lemmas": "ease accommodate patient gradual",
+    "date": "2019-07-31",
+    "DFF": 2.40, "PCE_YOY": 1.6, "UNRATE": 3.7, "GDP_GROWTH": 2.1,
+}
+
+
+async def test_compare_pair_returns_a():
+    """Returns filename_a when LLM responds 'A'."""
+    mock_client = MagicMock()
+    mock_content = MagicMock()
+    mock_content.text = "A"
+    mock_response = MagicMock()
+    mock_response.content = [mock_content]
+    mock_client.messages.create = AsyncMock(return_value=mock_response)
+
+    sem = asyncio.Semaphore(1)
+    fa, fb, winner = await compare_pair("a.txt", "b.txt", _REPR_A, _REPR_B, mock_client, sem)
+    assert fa == "a.txt"
+    assert fb == "b.txt"
+    assert winner == "a.txt"
+
+
+async def test_compare_pair_returns_b():
+    """Returns filename_b when LLM responds 'B'."""
+    mock_client = MagicMock()
+    mock_content = MagicMock()
+    mock_content.text = "B"
+    mock_response = MagicMock()
+    mock_response.content = [mock_content]
+    mock_client.messages.create = AsyncMock(return_value=mock_response)
+
+    sem = asyncio.Semaphore(1)
+    fa, fb, winner = await compare_pair("a.txt", "b.txt", _REPR_A, _REPR_B, mock_client, sem)
+    assert winner == "b.txt"
+
+
+async def test_compare_pair_none_on_ambiguous():
+    """Returns None as winner after two ambiguous responses."""
+    mock_client = MagicMock()
+    mock_content = MagicMock()
+    mock_content.text = "neither"
+    mock_response = MagicMock()
+    mock_response.content = [mock_content]
+    mock_client.messages.create = AsyncMock(return_value=mock_response)
+
+    sem = asyncio.Semaphore(1)
+    fa, fb, winner = await compare_pair("a.txt", "b.txt", _REPR_A, _REPR_B, mock_client, sem)
+    assert winner is None

@@ -236,3 +236,96 @@ async def filter_all_sentences(
         keep_positions.extend(start + i for i in indices)
 
     return df.iloc[sorted(keep_positions)].reset_index(drop=True)
+
+
+def _format_speech_block(label: str, rep: dict) -> str:
+    return (
+        f"SPEECH {label}\n"
+        f"Economic conditions: {rep['date']} | "
+        f"Fed funds rate: {rep['DFF']:.2f}% | "
+        f"Core PCE: {rep['PCE_YOY']:.1f}% YoY | "
+        f"Unemployment: {rep['UNRATE']:.1f}% | "
+        f"GDP growth: {rep['GDP_GROWTH']:.1f}% annualized\n"
+        f"Key terms: {rep['damped_lemmas']}"
+    )
+
+
+async def compare_pair(
+    filename_a: str,
+    filename_b: str,
+    repr_a: dict,
+    repr_b: dict,
+    client: anthropic.AsyncAnthropic,
+    semaphore: asyncio.Semaphore,
+) -> tuple[str, str, str | None]:
+    """
+    Compare two speeches. Returns (filename_a, filename_b, winner_filename).
+    winner_filename is None if the LLM response is not 'A' or 'B' after two attempts.
+    """
+    user_msg = (
+        _format_speech_block("A", repr_a)
+        + "\n\n"
+        + _format_speech_block("B", repr_b)
+        + "\n\nWhich speech signals a more hawkish stance given its economic context? Reply A or B."
+    )
+    async with semaphore:
+        for attempt in range(2):
+            try:
+                resp = await client.messages.create(
+                    model=COMPARE_MODEL,
+                    max_tokens=8,
+                    system=COMPARE_SYSTEM,
+                    messages=[{"role": "user", "content": user_msg}],
+                )
+                choice = resp.content[0].text.strip().upper()
+                if choice == "A":
+                    return filename_a, filename_b, filename_a
+                if choice == "B":
+                    return filename_a, filename_b, filename_b
+            except anthropic.APIError:
+                if attempt == 0:
+                    await asyncio.sleep(2)
+    return filename_a, filename_b, None
+
+
+async def run_tournament(
+    pairs: list[tuple[str, str]],
+    representations: dict[str, dict],
+    client: anthropic.AsyncAnthropic,
+    results_path: Path,
+    semaphore: asyncio.Semaphore,
+) -> pd.DataFrame:
+    """
+    Run all pairwise comparisons concurrently (semaphore limits to MAX_CONCURRENT).
+    Saves results every 200 comparisons for crash-safety.
+    Resumes from existing results file if present — skips already-done pairs.
+    Uses frozenset for done-pair lookup so (a,b) and (b,a) are treated as the same pair.
+    """
+    results: list[dict] = []
+
+    if results_path.exists():
+        existing = pd.read_csv(results_path)
+        done = {
+            frozenset([row["filename_a"], row["filename_b"]])
+            for _, row in existing.iterrows()
+        }
+        results = existing.to_dict("records")
+        pairs = [(a, b) for a, b in pairs if frozenset([a, b]) not in done]
+        log.info(f"  Resuming: {len(results)} done, {len(pairs)} remaining")
+
+    tasks = [
+        compare_pair(a, b, representations[a], representations[b], client, semaphore)
+        for a, b in pairs
+    ]
+
+    completed = 0
+    for coro in asyncio.as_completed(tasks):
+        fa, fb, winner = await coro
+        results.append({"filename_a": fa, "filename_b": fb, "winner": winner})
+        completed += 1
+        if completed % 200 == 0:
+            pd.DataFrame(results).to_csv(results_path, index=False)
+            log.info(f"  Progress: {completed}/{len(pairs)} comparisons")
+
+    pd.DataFrame(results).to_csv(results_path, index=False)
+    return pd.DataFrame(results)
