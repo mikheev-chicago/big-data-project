@@ -87,17 +87,26 @@ def oos_r2(y_true: pd.Series, y_pred: pd.Series, baseline: float) -> float:
     return 1 - mse_model / mse_baseline
 
 
+STARS = {0.01: "***", 0.05: "**", 0.10: "*"}
+
+def star(p: float) -> str:
+    for threshold, s in sorted(STARS.items()):
+        if p < threshold:
+            return s
+    return ""
+
+
 # ── Section 1: OOS regression ─────────────────────────────────────────────────
 
-def run_oos_regression(df: pd.DataFrame) -> pd.DataFrame:
+def run_oos_regression(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
     train = df[df["date"] < SPLIT_DATE].copy()
     test  = df[df["date"] >= SPLIT_DATE].copy()
 
     print(f"\n── Train/test split at {SPLIT_DATE.date()} ──────────────────────────")
     print(f"  Training: {len(train)} speeches  ({train['chair'].value_counts().to_dict()})")
     print(f"  Test:     {len(test)} speeches  ({test['chair'].value_counts().to_dict()})")
-    print(f"  Train yield_change mean: {train['yield_change'].mean():.4f}")
-    print(f"  Test  yield_change mean: {test['yield_change'].mean():.4f}")
+    print(f"  Train yield_change mean: {train['yield_change'].mean():.4f} pp")
+    print(f"  Test  yield_change mean: {test['yield_change'].mean():.4f} pp")
 
     specs = {
         "S1": f"yield_change ~ {MACRO}",
@@ -108,41 +117,99 @@ def run_oos_regression(df: pd.DataFrame) -> pd.DataFrame:
 
     train_mean = train["yield_change"].mean()
     test_mean  = test["yield_change"].mean()
-    rows = []
 
-    print(f"\n{'Spec':<6} {'IS R²':>8} {'OOS R² (vs test mean)':>22} {'OOS R² (vs train mean, C&T)':>28}")
-    print("─" * 68)
+    metric_rows = []
+    coef_rows   = []
+    fitted_models = {}
+
+    # ── Error metrics ─────────────────────────────────────────────────────────
+    col = 12
+    print(f"\n{'Spec':<6} {'IS R²':>{col}} {'RMSE':>{col}} {'MAE':>{col}} "
+          f"{'OOS R²':>{col}} {'OOS R² (C&T)':>{col}}")
+    print("─" * (6 + col * 5))
 
     for spec_name, formula in specs.items():
-        # Fit on training data with cluster-robust SEs
         fitted = smf.ols(formula, data=train).fit(
             cov_type="cluster",
             cov_kwds={"groups": train["date"].astype(str).values}
         )
-        is_r2 = fitted.rsquared
+        fitted_models[spec_name] = fitted
 
-        # Predict on test data
         y_pred = fitted.predict(test)
         y_true = test["yield_change"]
+        resid  = y_true - y_pred
 
+        is_r2        = fitted.rsquared
+        rmse         = float(np.sqrt((resid ** 2).mean()))
+        mae          = float(resid.abs().mean())
         oos_vs_test  = oos_r2(y_true, y_pred, test_mean)
-        oos_vs_train = oos_r2(y_true, y_pred, train_mean)   # Campbell & Thompson
+        oos_vs_train = oos_r2(y_true, y_pred, train_mean)
 
-        print(f"{spec_name:<6} {is_r2:>8.4f} {oos_vs_test:>22.4f} {oos_vs_train:>28.4f}")
+        print(f"{spec_name:<6} {is_r2:{col}.4f} {rmse:{col}.4f} {mae:{col}.4f} "
+              f"{oos_vs_test:{col}.4f} {oos_vs_train:{col}.4f}")
 
-        rows.append({
-            "spec":           spec_name,
-            "n_train":        len(train),
-            "n_test":         len(test),
-            "is_r2":          round(is_r2, 6),
-            "oos_r2_testmean": round(oos_vs_test, 6),
-            "oos_r2_trainmean": round(oos_vs_train, 6),
+        metric_rows.append({
+            "spec":              spec_name,
+            "n_train":           len(train),
+            "n_test":            len(test),
+            "is_r2":             round(is_r2, 6),
+            "rmse":              round(rmse, 6),
+            "mae":               round(mae, 6),
+            "oos_r2_testmean":   round(oos_vs_test, 6),
+            "oos_r2_trainmean":  round(oos_vs_train, 6),
         })
 
-    print("─" * 68)
-    print("C&T = Campbell & Thompson (2008) — uses training mean as naive benchmark")
+    print("─" * (6 + col * 5))
+    print("RMSE/MAE in percentage points (pp). C&T = Campbell & Thompson benchmark.")
 
-    return pd.DataFrame(rows)
+    # ── Coefficient table ─────────────────────────────────────────────────────
+    # Show all coefficients for the training-set models side by side
+    all_vars = []
+    for fitted in fitted_models.values():
+        for v in fitted.params.index:
+            if v not in all_vars:
+                all_vars.append(v)
+
+    # Display order: hawkishness first, then interaction, then macro, then FEs
+    display_order = [
+        "hawkishness", "hawkishness:pre_fomc", "pre_fomc",
+        "DFF", "PCE_YOY", "UNRATE", "GDP_GROWTH",
+        "chair_yellen", "chair_powell", "Intercept",
+    ]
+    var_order = [v for v in display_order if v in all_vars]
+
+    cw = 18
+    print(f"\n── Coefficient estimates (trained on pre-2021 data) ─────────────────")
+    print(f"  {'Variable':<28}" + "".join(f"{'S'+s[1:]:>{cw}}" for s in specs))
+    print("  " + "─" * (28 + cw * len(specs)))
+
+    for var in var_order:
+        coef_line = f"  {var:<28}"
+        se_line   = f"  {'':28}"
+        for spec_name, fitted in fitted_models.items():
+            if var in fitted.params:
+                c = fitted.params[var]
+                se = fitted.bse[var]
+                p  = fitted.pvalues[var]
+                coef_line += f"{f'{c:+.4f}{star(p)}':>{cw}}"
+                se_line   += f"{f'({se:.4f})':>{cw}}"
+                coef_rows.append({
+                    "spec": spec_name, "variable": var,
+                    "coef": round(c, 6), "se": round(se, 6),
+                    "tstat": round(fitted.tvalues[var], 4),
+                    "pvalue": round(p, 4), "stars": star(p),
+                })
+            else:
+                coef_line += f"{'—':>{cw}}"
+                se_line   += f"{'':>{cw}}"
+        print(coef_line)
+        print(se_line)
+
+    print("  " + "─" * (28 + cw * len(specs)))
+    print("  Cluster-robust SEs (by date) in parentheses.")
+    print("  * p<0.10  ** p<0.05  *** p<0.01")
+
+    return pd.DataFrame(metric_rows), pd.DataFrame(coef_rows)
 
 
 # ── Section 2: Time-series sanity check ──────────────────────────────────────
@@ -246,16 +313,18 @@ def run_correlations(df: pd.DataFrame) -> pd.DataFrame:
 def main():
     df = load_data()
 
-    oos_df  = run_oos_regression(df)
-    qt_df   = run_time_series_check(df)
-    corr_df = run_correlations(df)
+    oos_df, coef_df = run_oos_regression(df)
+    qt_df           = run_time_series_check(df)
+    corr_df         = run_correlations(df)
 
     oos_df.to_csv(PROCESSED / "oos_results.csv", index=False)
+    coef_df.to_csv(PROCESSED / "oos_coefficients.csv", index=False)
     qt_df.to_csv(PROCESSED / "hawkishness_quarterly.csv", index=False)
     corr_df.to_csv(PROCESSED / "score_correlations.csv", index=False)
 
     print(f"\nSaved:")
-    print(f"  data/processed/oos_results.csv")
+    print(f"  data/processed/oos_results.csv          ({len(oos_df)} specs)")
+    print(f"  data/processed/oos_coefficients.csv     ({len(coef_df)} coefficient rows)")
     print(f"  data/processed/hawkishness_quarterly.csv")
     print(f"  data/processed/score_correlations.csv")
 
