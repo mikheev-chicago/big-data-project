@@ -202,6 +202,65 @@ Outputs: `speech_scores_{chair}.csv` (per-speech scores including all three z-sc
 
 ---
 
+### Step 6 — Regression analysis ✅ complete
+
+**Script:** `src/regression_analysis.py`
+
+OLS regression of same-day 2-year Treasury yield change on hawkishness score and macro controls, with cluster-robust standard errors clustered by date. Five specifications:
+
+| Spec | Description |
+|------|-------------|
+| **S1** | Macro-only baseline: DFF (fed funds rate), PCE_YOY (core inflation), UNRATE (unemployment), GDP_GROWTH |
+| **S2** | S1 + primary hawkishness score |
+| **S3** | S2 + pre-FOMC dummy + hawkishness × pre-FOMC interaction (speech within 14 days of FOMC meeting) |
+| **S4** | S3 + chair fixed effects (Bernanke = reference) |
+| **S5** | Robustness: S1 + each sub-score separately (hawk_z, dove_z, net_z) |
+
+**Results (N=138 speeches, cluster-robust SEs by date):**
+
+```
+                              S1 Macro   S2 +Hawk  S3 +FOMC×Hawk  S4 +Chair FE
+────────────────────────────────────────────────────────────────────────────────
+hawkishness                             +0.0005      +0.0101         +0.0093
+                                       (0.0063)     (0.0082)        (0.0086)
+hawkishness × pre_fomc                             -0.0262*        -0.0258*
+                                                    (0.0136)        (0.0140)
+pre_fomc                                            -0.0175         -0.0215
+                                                    (0.0127)        (0.0134)
+DFF                         -0.0063    -0.0063      -0.0041         -0.0006
+                            (0.0064)   (0.0063)     (0.0062)        (0.0073)
+chair_powell (vs Bernanke)                                          -0.0408*
+                                                                    (0.0219)
+────────────────────────────────────────────────────────────────────────────────
+R²                           0.019      0.019        0.063           0.101
+Adj. R²                     -0.010     -0.018        0.013           0.037
+* p<0.10  ** p<0.05  *** p<0.01
+```
+
+**Sub-score robustness (S5):**
+
+| Sub-score | Coef | SE | p |
+|-----------|------|----|---|
+| hawk_z | −0.0076 | (0.0055) | 0.17 |
+| dove_z | −0.0092* | (0.0049) | 0.065 |
+| net_z | +0.0015 | (0.0048) | 0.76 |
+
+**Interpretation:**
+
+- **S2:** The composite hawkishness score has no statistically significant effect on same-day yield changes (coef ≈ 0, p=0.94). Adding speech tone to macro controls adds essentially nothing to R².
+
+- **S3 — pre-FOMC interaction:** The one notable finding is a marginally significant *negative* interaction (p=0.054): hawkish speeches in the 14 days before an FOMC meeting are associated with smaller (not larger) yield increases. One interpretation is that markets have already priced in the direction of the upcoming decision by the time these speeches are delivered, so the speech adds little new information.
+
+- **S4 — chair fixed effects:** The Powell dummy is negative and marginally significant (−0.041pp, p<0.10), suggesting yields moved less on Powell speech days than Bernanke speech days after controlling for macro conditions — possibly reflecting that Powell's communication style was more predictable.
+
+- **S5:** The dove_z sub-score shows the clearest signal: higher dove-term density is associated with lower yields (p=0.065), consistent with the expected direction. The hawk channel alone (hawk_z) has a counterintuitive negative sign, likely because hawk-coded words appear heavily in financial regulation speeches (which don't signal rate hikes). This reinforces why the lexicon-based approach underperforms — it cannot distinguish monetary policy language from regulatory language.
+
+Overall, the dictionary-based approach produces weak and inconsistent results, consistent with the 37.6% directional accuracy in Step 5. These results motivate moving to LLM-based pairwise scoring (Phase 2), which evaluates the actual meaning of each sentence rather than pattern-matching individual words.
+
+Outputs: `regression_results.csv` (tidy per-coefficient table, all 7 specs), `regression_summary.csv` (model-level stats).
+
+---
+
 ## Data Sources
 
 | Source | Description | Series |
@@ -237,7 +296,9 @@ fedspeak-project/
 │       ├── sentences_{chair}.csv            # sentence fragments + lemmas + damped_lemmas
 │       ├── idf_weights_{chair}.csv          # lemma → doc_freq → multiplier lookup table
 │       ├── speech_scores_{chair}.csv        # per-speech hawkishness score, label, yield data
-│       └── yield_results_abg.csv            # accuracy summary: correct/total per regime
+│       ├── yield_results_abg.csv            # accuracy summary: correct/total per regime
+│       ├── regression_results.csv           # tidy coefficient table (all 7 specs)
+│       └── regression_summary.csv           # per-spec model stats (N, R², Adj R²)
 ├── src/
 │   ├── scrape_speeches.py                   # Phase 0: Fed speech scraper
 │   ├── fetch_fred.py                        # Phase 0: FRED macro data + macro_context.csv
@@ -245,7 +306,8 @@ fedspeak-project/
 │   ├── phase1_filter.py                     # Phase 1: 2-stage LLM relevance filter
 │   ├── build_sentence_corpus.py             # Experiment 1 step 2: sentence tokenization + splitting
 │   ├── lemmatize_and_damp.py               # Experiment 1 steps 3–4: lemmatization + IDF damping
-│   └── score_hawkishness.py                # Experiment 1 step 5: A&BG dictionary scoring + yield test
+│   ├── score_hawkishness.py                # Experiment 1 step 5: A&BG dictionary scoring + yield test
+│   └── regression_analysis.py             # Experiment 1 step 6: OLS regression (S1–S5)
 ├── requirements.txt
 └── README.md
 ```
