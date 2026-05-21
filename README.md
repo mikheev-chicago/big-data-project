@@ -163,28 +163,42 @@ We score each speech using a hawk/dove word list from Apel & Blix Grimaldi (2014
 | tighten, hike, elevated, restrictive | +1 hawkish | signal rates should rise |
 | ease, accommodative, patient, gradual | -1 dovish | signal rates should hold or fall |
 
-**How scoring works:**
+**Three sub-scores per speech:**
 
-1. **Fragment score:** For each sentence fragment, count how many lemmas appear in the word list, sum their polarities, and divide by the total number of words in the fragment. Dividing by length means we measure the *density* of hawk/dove signal — a long speech that mentions "tighten" once shouldn't outscore a short fragment where it's the main point.
+Rather than a single net score, we compute three separate measures for each speech:
 
-2. **Speech score:** Average all fragment scores for a speech, weighted by fragment length (longer fragments count more).
+1. **hawk_density** — how many hawk-coded words appear per total word count (higher = more hawkish)
+2. **dove_density** — how many dove-coded words appear per total word count (higher = more dovish)
+3. **net_score** — hawk_density minus dove_density (higher = more hawkish)
 
-3. **Labels within regime:** Within each Chair's speeches, sort by score and split into equal thirds — bottom third = **Dovish**, middle = **Neutral**, top = **Hawkish**. We rank within each regime rather than using a global cutoff because absolute score levels aren't comparable across eras (Bernanke operated during near-zero rates and QE; Powell during a tightening cycle).
+Separating hawk and dove channels is useful because a speech could have both a lot of hawkish language *and* a lot of dovish language — the net score would be near zero, but the separate channels reveal that the speech is actually highly mixed rather than genuinely neutral.
+
+**Z-score standardization (training window: 2008–2020):**
+
+Each sub-score is standardized into a z-score using the mean and standard deviation computed only from speeches up to the end of 2020. Speeches after 2020 (only present in the Powell regime) are scored out-of-sample — their z-scores are computed using the 2018–2020 mean and std, not their own values. This mimics how you'd actually deploy the model without lookahead bias.
+
+The **primary hawkishness measure** combines all three z-scores:
+
+> **hawkishness = (hawk_z − dove_z + net_z) / 3**
+
+dove_z is *subtracted* because high dove density is dovish (opposite direction to hawk_z and net_z). Averaging three correlated measures smooths out noise from any single channel.
+
+**Labels within regime:** Within each Chair's speeches, sort by `hawkishness` and split into equal thirds — bottom third = **Dovish**, middle = **Neutral**, top = **Hawkish**. Ranking within each regime rather than globally accounts for the fact that absolute score levels aren't comparable across eras.
 
 **Yield direction test:**
 
-For each Hawkish or Dovish speech (Neutral excluded), we check whether the 2-year Treasury yield moved in the predicted direction on the speech day (same-day close minus prior day's close). Speeches delivered after market close are excluded since the market couldn't have responded that day.
+For each Hawkish or Dovish speech (Neutral excluded), we check whether the 2-year Treasury yield moved in the predicted direction on the speech day (same-day close minus prior day's close). Speeches delivered after market close are excluded.
 
-| Regime | Correct / Total | Accuracy |
-|--------|----------------|----------|
-| Bernanke | 19/48 | 39.6% |
-| Yellen | 6/16 | 37.5% |
-| Powell | 14/30 | 46.7% |
-| **Overall** | **39/94** | **41.5%** |
+| Regime | Training window | Correct / Total | Accuracy |
+|--------|----------------|----------------|----------|
+| Bernanke | 2008–2014 (all in-sample) | 17/48 | 35.4% |
+| Yellen | 2014–2018 (all in-sample) | 4/15 | 26.7% |
+| Powell | 2018–2020 in-sample, 2021–2025 out-of-sample | 14/30 | 46.7% |
+| **Overall** | | **35/93** | **37.6%** |
 
-**Result: below coin-flip (50%).** The main limitation is that a word list can't distinguish context. Words like *firm*, *resilient*, and *elevated* appear in both monetary policy speeches ("labor market is firming") and financial regulation speeches ("we need firm oversight") — the latter have nothing to do with rate direction. Bernanke's top-scored "hawkish" speeches turned out to be financial stability talks from 2008–2009, not monetary policy statements. This result motivates moving to LLM-based pairwise scoring (Phase 2), which can read the actual meaning of a sentence rather than matching isolated words.
+**Result: below coin-flip (50%).** The main limitation is that a word list cannot distinguish context. Words like *firm*, *resilient*, and *elevated* appear in both monetary policy speeches ("labor market is firming") and financial regulation speeches ("we need firm oversight") — the latter have nothing to do with rate direction. Bernanke's top-scored "hawkish" speeches turned out to be financial stability talks from 2008–2009. This result motivates moving to LLM-based pairwise scoring (Phase 2), which can read the actual meaning of a sentence rather than matching isolated words.
 
-Outputs: `speech_scores_{chair}.csv` (per-speech scores, labels, yield data), `yield_results_abg.csv` (accuracy summary).
+Outputs: `speech_scores_{chair}.csv` (per-speech scores including all three z-scores and primary measure), `yield_results_abg.csv` (accuracy summary).
 
 ---
 
