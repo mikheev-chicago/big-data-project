@@ -92,3 +92,45 @@ def generate_pairs(filenames: list[str]) -> list[tuple[str, str]]:
         result.append((a, b))
     random.shuffle(result)
     return result
+
+
+def build_speech_representations(
+    filtered_df: pd.DataFrame,
+    macro_df: pd.DataFrame,
+) -> dict[str, dict]:
+    """
+    Aggregate filtered sentences into one representation dict per speech.
+
+    Groups by filename, joins damped_lemmas with spaces, then inner-joins
+    macro context (DFF, PCE_YOY, UNRATE, GDP_GROWTH) from macro_df.
+    Speeches with no macro row are excluded.
+
+    Returns a dict keyed by filename. Each value has keys:
+        damped_lemmas, date, title, DFF, PCE_YOY, UNRATE, GDP_GROWTH
+    """
+    agg = (
+        filtered_df
+        .groupby("filename", as_index=False)
+        .agg(
+            date         =("date",         "first"),
+            title        =("title",        "first"),
+            damped_lemmas=("damped_lemmas", lambda x: " ".join(x.dropna())),
+        )
+    )
+    merged = agg.merge(
+        macro_df[["filename", "DFF", "PCE_YOY", "UNRATE", "GDP_GROWTH"]],
+        on="filename",
+        how="inner",
+    )
+    return {
+        row["filename"]: {
+            "damped_lemmas": row["damped_lemmas"],
+            "date":          str(row["date"]),
+            "title":         row["title"],
+            "DFF":           float(row["DFF"]),
+            "PCE_YOY":       float(row["PCE_YOY"]),
+            "UNRATE":        float(row["UNRATE"]),
+            "GDP_GROWTH":    float(row["GDP_GROWTH"]),
+        }
+        for _, row in merged.iterrows()
+    }

@@ -8,7 +8,7 @@ from unittest.mock import AsyncMock, MagicMock
 import pandas as pd
 import pytest
 
-from pairwise_scoring import generate_pairs
+from pairwise_scoring import generate_pairs, build_speech_representations
 
 
 def test_generate_pairs_count():
@@ -37,3 +37,74 @@ def test_generate_pairs_randomized():
     # With 190 pairs, the probability all stay in original order is (0.5)^190 ≈ 0
     in_order = [(a, b) for a, b in pairs if a < b]
     assert len(in_order) < len(pairs)
+
+
+def test_build_representations_keys():
+    """Each filename in filtered_df appears as a key in the output."""
+    filtered = pd.DataFrame({
+        "filename":     ["a.txt", "a.txt", "b.txt"],
+        "date":         ["2010-01-01", "2010-01-01", "2012-03-15"],
+        "damped_lemmas":["tighten rate", "inflation high", "ease accommodate"],
+        "title":        ["Speech A", "Speech A", "Speech B"],
+    })
+    macro = pd.DataFrame({
+        "filename":   ["a.txt", "b.txt"],
+        "DFF":        [0.25, 0.25],
+        "PCE_YOY":    [1.5, 1.8],
+        "UNRATE":     [9.5, 8.1],
+        "GDP_GROWTH": [-2.1, 3.0],
+    })
+    reps = build_speech_representations(filtered, macro)
+    assert set(reps.keys()) == {"a.txt", "b.txt"}
+
+
+def test_build_representations_lemmas_concatenated():
+    """damped_lemmas from multiple fragments are joined with a space."""
+    filtered = pd.DataFrame({
+        "filename":     ["a.txt", "a.txt"],
+        "date":         ["2010-01-01", "2010-01-01"],
+        "damped_lemmas":["tighten rate", "inflation high"],
+        "title":        ["Speech A", "Speech A"],
+    })
+    macro = pd.DataFrame({
+        "filename": ["a.txt"],
+        "DFF": [0.25], "PCE_YOY": [1.5], "UNRATE": [9.5], "GDP_GROWTH": [-2.1],
+    })
+    reps = build_speech_representations(filtered, macro)
+    assert reps["a.txt"]["damped_lemmas"] == "tighten rate inflation high"
+
+
+def test_build_representations_macro_attached():
+    """Macro fields (DFF, PCE_YOY, UNRATE, GDP_GROWTH) are joined from macro_context."""
+    filtered = pd.DataFrame({
+        "filename":     ["a.txt"],
+        "date":         ["2022-06-15"],
+        "damped_lemmas":["tighten"],
+        "title":        ["Speech A"],
+    })
+    macro = pd.DataFrame({
+        "filename": ["a.txt"],
+        "DFF": [1.58], "PCE_YOY": [6.3], "UNRATE": [3.6], "GDP_GROWTH": [-1.6],
+    })
+    reps = build_speech_representations(filtered, macro)
+    assert reps["a.txt"]["DFF"] == pytest.approx(1.58)
+    assert reps["a.txt"]["PCE_YOY"] == pytest.approx(6.3)
+    assert reps["a.txt"]["UNRATE"] == pytest.approx(3.6)
+    assert reps["a.txt"]["GDP_GROWTH"] == pytest.approx(-1.6)
+
+
+def test_build_representations_drops_missing_macro():
+    """Speeches with no matching macro row are excluded from output."""
+    filtered = pd.DataFrame({
+        "filename":     ["a.txt", "b.txt"],
+        "date":         ["2010-01-01", "2010-01-01"],
+        "damped_lemmas":["tighten", "ease"],
+        "title":        ["A", "B"],
+    })
+    macro = pd.DataFrame({
+        "filename": ["a.txt"],
+        "DFF": [0.25], "PCE_YOY": [1.5], "UNRATE": [9.5], "GDP_GROWTH": [-2.1],
+    })
+    reps = build_speech_representations(filtered, macro)
+    assert "b.txt" not in reps
+    assert "a.txt" in reps
