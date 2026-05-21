@@ -1,0 +1,91 @@
+date,regime,title,bucket,lm_score,rank,yield_change,yield_dir,correct
+2008-01-10,Chair A,"Financial Markets, the Economic Outlook, and Monetary Policy",Dovish,-0.061048082117774176,9,0.020000000000000018,Up,False
+2008-03-04,Chair A,Reducing Preventable Mortgage Foreclosures,Dovish,-0.08261405672009864,5,0.039999999999999813,Up,False
+2008-04-10,Chair A,Addressing Weaknesses in the Global Financial Markets: The Report of the President's Working Group on Financial Markets,Hawkish,-0.021207177814029365,50,0.07000000000000006,Up,True
+2008-05-13,Chair A,Liquidity Provision by the Federal Reserve,Dovish,-0.07601184600197433,6,0.17000000000000037,Up,False
+2008-05-15,Chair A,Risk Management in Financial Institutions,Hawkish,-0.018289085545722714,54,-0.07999999999999963,Down,False
+2008-06-03,Chair A,Remarks on the economic outlook,Hawkish,-0.012,62,-0.05999999999999961,Down,False
+2008-06-09,Chair A,Outstanding Issues in the Analysis of Inflation,Hawkish,-0.007518796992481203,65,0.33000000000000007,Up,True
+2008-07-08,Chair A,Financial Regulation and Financial Stability,Dovish,-0.044124938026772434,21,0.0,Flat,False
+2008-10-14,Chair A,Remarks,Hawkish,-0.013651877133105802,60,0.19999999999999996,Up,True
+2008-10-15,Chair A,Stabilizing the Financial Markets and the Economy,Hawkish,-0.022044088176352707,48,-0.18000000000000016,Down,False
+2008-10-31,Chair A,The Future of Mortgage Finance in the United States,Hawkish,-0.02009456264775414,52,-0.030000000000000027,Down,False
+2008-11-14,Chair A,Policy Coordination Among Central Banks,Hawkish,-0.018137847642079808,55,-0.020000000000000018,Down,False
+2008-12-04,Chair A,"Housing, Mortgage Markets, and Foreclosures",Dovish,-0.06327236777063766,8,-0.050000000000000044,Down,True
+2009-01-13,Chair A,The Crisis and the Policy Response,Dovish,-0.04409040385327899,22,0.020000000000000018,Up,False
+2009-02-18,Chair A,Federal Reserve Policies to Ease Credit and Their Implications for the Fed's Balance Sheet,Hawkish,-0.019174041297935103,53,0.09999999999999998,Up,True
+2009-03-20,Chair A,The Financial Crisis and Community Banking,Dovish,-0.04860731840524304,17,0.020000000000000018,Up,False
+2009-04-14,Chair A,Four Questions about the Financial Crisis,Dovish,-0.06351626016260163,7,-0.030000000000000027,Down,True
+2009-05-07,Chair A,Lessons of the Financial Crisis for Banking Supervision,Hawkish,-0.009384775808133473,64,0.040000000000000036,Up,True
+2009-08-21,Chair A,Reflections on a Year of Crisis,Dovish,-0.08538763844230082,4,0.09999999999999987,Up,False
+2009-10-08,Chair A,The Federal Reserve's Balance Sheet: An Update,Dovish,-0.0450381679389313,19,0.030000000000000027,Up,False
+2009-10-19,Chair A,Asia and the Global Financial Crisis,Dovish,-0.051075268817204304,15,0.020000000000000018,Up,False
+2009-10-23,Chair A,Financial Regulation and Supervision after the Crisis: The Role of the Federal Reserve,Hawkish,-0.022155943757988922,47,0.07000000000000006,Up,True
+2009-11-16,Chair A,On the Outlook for the Economy and Policy,Dovish,-0.05002718868950517,16,-0.039999999999999925,Down,True
+2009-12-07,Chair A,Frequently Asked Questions,Hawkish,-0.02089704383282365,51,-0.05999999999999994,Down,False
+2010-04-07,Chair A,"Economic Challenges: Past, Present, and Future",Dovish,-0.05709954522486104,11,-0.07999999999999985,Down,True
+2010-04-27,Chair A,Achieving Fiscal Sustainability,Dovish,-0.04310344827586207,23,-0.06000000000000005,Down,True
+2010-05-25,Chair A,"Central Bank Independence, Transparency, and Accountability",Hawkish,-0.003125,67,0.040000000000000036,Up,True
+2010-08-27,Chair A,The Economic Outlook and Monetary Policy,Hawkish,-0.01360030222893842,61,0.050000000000000044,Up,True
+2010-09-24,Chair A,Implications of the Financial Crisis for Economics,Dovish,-0.05999387817569636,10,0.0,Flat,False
+2011-06-07,Chair A,The U.S. Economic Outlook,Hawkish,-0.02148997134670487,49,-0.03999999999999998,Down,False
+2011-06-14,Chair A,Fiscal Sustainability,Dovish,-0.05676442762535478,12,0.04999999999999999,Up,False
+2011-09-08,Chair A,The U.S. Economic Outlook,Dovish,-0.052591463414634144,14,-0.01999999999999999,Down,True
+2011-10-18,Chair A,The Effects of the Great Recession on Central Bank Doctrine and Practice,Hawkish,-0.010632911392405063,63,0.0,Flat,False
+2011-11-10,Chair A,Town Hall Meeting Remarks,Hawkish,-0.01566820276497696,57,0.0,Flat,False
+2012-02-10,Chair A,Housing Markets in Transition,Dovish,-0.04824561403508772,18,0.0,Flat,False
+2012-03-26,Chair A,Recent Developments in the Labor Market,Dovish,-0.09982094897045658,1,-0.010000000000000009,Down,True
+2012-04-09,Chair A,Fostering Financial Stability,Hawkish,-0.017010309278350514,56,0.0,Flat,False
+2012-04-13,Chair A,Some Reflections on the Crisis and the Policy Response,Dovish,-0.0973305954825462,2,-0.019999999999999962,Down,True
+2012-08-31,Chair A,Monetary Policy since the Onset of the Crisis,Hawkish,-0.01433389544688027,59,-0.05000000000000002,Down,False
+2012-10-14,Chair A,U.S. Monetary Policy and International Implications,Hawkish,0.0,68,0.0,Flat,False
+2012-11-20,Chair A,The Economic Recovery and Economic Policy,Dovish,-0.05388205345778532,13,0.020000000000000018,Up,False
+2013-05-10,Chair A,Monitoring the Financial System,Dovish,-0.04503716659379099,20,0.04000000000000001,Up,False
+2013-07-10,Chair A,"A Century of U.S. Central Banking: Goals, Frameworks, Accountability",Hawkish,-0.005333333333333333,66,0.010000000000000009,Up,True
+2013-10-14,Chair A,Celebrating 20 Years of the Bank of Mexico's Independence,Hawkish,0.01757188498402556,69,0.0,Flat,False
+2013-11-08,Chair A,The Crisis as a Classic Financial Panic,Dovish,-0.08710217755443886,3,0.030000000000000027,Up,False
+2013-12-16,Chair A,Opening Remarks,Hawkish,-0.014563106796116505,58,0.0,Flat,False
+2014-03-31,Chair B,What the Federal Reserve Is Doing to Promote a Stronger Job Market,Dovish,-0.036449147560258674,5,-0.010000000000000009,Down,True
+2014-04-16,Chair B,Monetary Policy and the Economic Recovery,Dovish,-0.04752150757886112,2,0.0,Flat,False
+2014-05-15,Chair B,Small Businesses and the Recovery,Hawkish,0.012396694214876033,22,-0.010000000000000009,Down,False
+2014-07-02,Chair B,Monetary Policy and Financial Stability,Hawkish,-0.026856240126382307,15,0.020000000000000018,Up,True
+2014-08-22,Chair B,Labor Market Dynamics and Monetary Policy,Dovish,-0.06592592592592593,1,0.040000000000000036,Up,False
+2015-05-22,Chair B,The Outlook for the Economy,Hawkish,-0.012391573729863693,21,0.040000000000000036,Up,True
+2015-07-10,Chair B,Recent Developments and the Outlook for the Economy,Hawkish,-0.02502606882168926,17,0.050000000000000044,Up,True
+2015-09-24,Chair B,Inflation Dynamics and Monetary Policy,Dovish,-0.03484119345524543,6,-0.029999999999999916,Down,True
+2015-12-02,Chair B,The Economic Outlook and Monetary Policy,Hawkish,-0.018503937007874015,19,0.029999999999999916,Up,True
+2016-03-29,Chair B,"The Outlook, Uncertainty, and Monetary Policy",Hawkish,-0.024671052631578948,18,-0.10999999999999999,Down,False
+2016-06-06,Chair B,Current Conditions and the Outlook for the U.S. Economy,Hawkish,-0.02567237163814181,16,0.020000000000000018,Up,True
+2016-10-14,Chair B,Macroeconomic Research After the Crisis,Dovish,-0.034047919293820936,7,-0.010000000000000009,Down,True
+2017-01-18,Chair B,The Goals of Monetary Policy and How We Pursue Them,Dovish,-0.03994082840236687,3,0.06000000000000005,Up,False
+2017-08-25,Chair B,Financial Stability a Decade after the Onset of the Crisis,Dovish,-0.03880764904386952,4,0.020000000000000018,Up,False
+2017-10-15,Chair B,The U.S. Economy and Monetary Policy,Hawkish,-0.01509433962264151,20,0.0,Flat,False
+2018-04-06,Chair C,The Outlook for the U.S. Economy,Dovish,-0.041935483870967745,10,-0.029999999999999805,Down,True
+2018-05-25,Chair C,Financial Stability and Central Bank Transparency,Hawkish,0.03807615230460922,44,-0.020000000000000018,Down,False
+2018-06-20,Chair C,Monetary Policy at a Time of Uncertainty and Tight Labor Markets,Dovish,-0.05855855855855856,3,0.020000000000000018,Up,False
+2018-08-24,Chair C,Monetary Policy in a Changing Economy,Dovish,-0.03936348408710218,12,0.020000000000000018,Up,False
+2018-09-27,Chair C,Brief Remarks on the U.S. Economy,Hawkish,0.03271028037383177,42,0.0,Flat,False
+2018-10-02,Chair C,Monetary Policy and Risk Management at a Time of Low Inflation and Low Unemployment,Dovish,-0.03982930298719772,11,0.0,Flat,False
+2018-11-28,Chair C,The Federal Reserve's Framework for Monitoring Financial Stability,Dovish,-0.04899559039686428,6,-0.020000000000000018,Down,True
+2019-05-20,Chair C,Business Debt and Our Dynamic Financial System,Dovish,-0.0369935408103347,14,0.009999999999999787,Up,False
+2019-06-25,Chair C,Economic Outlook and Monetary Policy Review,Hawkish,-0.00482315112540193,32,-0.010000000000000009,Down,False
+2019-08-23,Chair C,Challenges for Monetary Policy,Dovish,-0.04499196572040707,8,-0.10000000000000009,Down,True
+2019-10-04,Chair C,Opening Remarks,Hawkish,0.010810810810810811,39,0.010000000000000009,Up,True
+2019-10-09,Chair C,Opening Remarks,Hawkish,0.02040816326530612,41,0.050000000000000044,Up,True
+2019-11-25,Chair C,Building on the Gains from the Long Expansion,Hawkish,0.008481764206955046,37,0.0,Flat,False
+2020-05-13,Chair C,Current Economic Issues,Dovish,-0.08836524300441827,1,-0.010000000000000009,Down,True
+2020-10-06,Chair C,Recent Economic Developments and the Challenges Ahead,Dovish,-0.05087881591119334,5,0.0,Flat,False
+2021-02-10,Chair C,Getting Back to a Strong Labor Market,Dovish,-0.03880190605854323,13,0.0,Flat,False
+2022-08-26,Chair C,Monetary Policy and Price Stability,Hawkish,0.004491017964071856,36,0.020000000000000018,Up,True
+2022-11-30,Chair C,Inflation and the Labor Market,Dovish,-0.05481283422459893,4,-0.10000000000000053,Down,True
+2023-01-10,Chair C,"Panel on ""Central Bank Independence and the MandateâEvolving Views""",Hawkish,0.03650793650793651,43,0.04999999999999982,Up,True
+2023-06-29,Chair C,Financial Stability and Economic Developments,Dovish,-0.058823529411764705,2,0.16000000000000014,Up,False
+2023-11-09,Chair C,Opening Remarks,Dovish,-0.048446069469835464,7,0.10000000000000053,Up,False
+2023-12-01,Chair C,Opening Remarks,Hawkish,-0.007853403141361256,30,-0.17000000000000082,Down,False
+2024-04-03,Chair C,Opening Remarks,Hawkish,0.010355029585798817,38,-0.020000000000000462,Down,False
+2024-08-23,Chair C,Review and Outlook,Dovish,-0.04198062432723358,9,-0.0900000000000003,Down,True
+2024-09-30,Chair C,Economic Outlook,Hawkish,0.0,34,0.11000000000000032,Up,True
+2024-11-14,Chair C,Economic Outlook,Hawkish,-0.006756756756756757,31,0.07000000000000028,Up,True
+2025-03-07,Chair C,Economic Outlook,Hawkish,0.0,34,0.03000000000000025,Up,True
+2025-04-04,Chair C,Economic Outlook,Hawkish,0.0,34,-0.029999999999999805,Down,False
+2025-04-16,Chair C,Economic Outlook,Hawkish,0.011961722488038277,40,-0.06999999999999984,Down,False

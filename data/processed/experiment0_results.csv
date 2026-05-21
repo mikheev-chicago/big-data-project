@@ -1,0 +1,139 @@
+date,chair_key,title,filename,lm_score,bucket,yield_change,evening
+2008-12-04,bernanke,"Housing, Mortgage Markets, and Foreclosures",20081204_bernanke_Housing_Mortgage_Markets_and_Foreclosures.txt,-0.06327236777063766,Dovish,-0.050000000000000044,False
+2008-12-01,bernanke,Federal Reserve Policies in the Financial Crisis,20081201_bernanke_Federal_Reserve_Policies_in_the_Financial_Crisis.txt,-0.04156234351527291,Neutral,-0.09999999999999998,False
+2008-11-14,bernanke,Policy Coordination Among Central Banks,20081114_bernanke_Policy_Coordination_Among_Central_Banks.txt,-0.018137847642079808,Hawkish,-0.020000000000000018,False
+2008-10-31,bernanke,The Future of Mortgage Finance in the United States,20081031_bernanke_The_Future_of_Mortgage_Finance_in_the_United_States.txt,-0.02009456264775414,Hawkish,-0.030000000000000027,False
+2008-10-15,bernanke,Stabilizing the Financial Markets and the Economy,20081015_bernanke_Stabilizing_the_Financial_Markets_and_the_Economy.txt,-0.022044088176352707,Hawkish,-0.18000000000000016,False
+2008-10-14,bernanke,Remarks,20081014_bernanke_Remarks.txt,-0.013651877133105802,Hawkish,0.19999999999999996,False
+2008-10-07,bernanke,Current Economic and Financial Conditions,20081007_bernanke_Current_Economic_and_Financial_Conditions.txt,-0.04129263913824058,Neutral,0.040000000000000036,False
+2008-08-22,bernanke,Reducing Systemic Risk,20080822_bernanke_Reducing_Systemic_Risk.txt,-0.03521491455204557,Neutral,0.08999999999999986,False
+2008-07-08,bernanke,Financial Regulation and Financial Stability,20080708_bernanke_Financial_Regulation_and_Financial_Stability.txt,-0.044124938026772434,Dovish,0.0,False
+2008-06-09,bernanke,Outstanding Issues in the Analysis of Inflation,20080609_bernanke_Outstanding_Issues_in_the_Analysis_of_Inflation.txt,-0.007518796992481203,Hawkish,0.33000000000000007,False
+2008-06-03,bernanke,Remarks on the economic outlook,20080603_bernanke_Remarks_on_the_economic_outlook.txt,-0.012,Hawkish,-0.05999999999999961,False
+2008-05-15,bernanke,Risk Management in Financial Institutions,20080515_bernanke_Risk_Management_in_Financial_Institutions.txt,-0.018289085545722714,Hawkish,-0.07999999999999963,False
+2008-05-13,bernanke,Liquidity Provision by the Federal Reserve,20080513_bernanke_Liquidity_Provision_by_the_Federal_Reserve.txt,-0.07601184600197433,Dovish,0.17000000000000037,False
+2008-04-10,bernanke,Addressing Weaknesses in the Global Financial Markets: The Report of the President's Working Group on Financial Markets,20080410_bernanke_Addressing_Weaknesses_in_the_Global_Financial_Markets_The_Re.txt,-0.021207177814029365,Hawkish,0.07000000000000006,False
+2008-03-04,bernanke,Reducing Preventable Mortgage Foreclosures,20080304_bernanke_Reducing_Preventable_Mortgage_Foreclosures.txt,-0.08261405672009864,Dovish,0.039999999999999813,False
+2008-01-10,bernanke,"Financial Markets, the Economic Outlook, and Monetary Policy",20080110_bernanke_Financial_Markets_the_Economic_Outlook_and_Monetary_Policy.txt,-0.061048082117774176,Dovish,0.020000000000000018,False
+2009-12-07,bernanke,Frequently Asked Questions,20091207_bernanke_Frequently_Asked_Questions.txt,-0.02089704383282365,Hawkish,-0.05999999999999994,False
+2009-11-16,bernanke,On the Outlook for the Economy and Policy,20091116_bernanke_On_the_Outlook_for_the_Economy_and_Policy.txt,-0.05002718868950517,Dovish,-0.039999999999999925,False
+2009-10-23,bernanke,Financial Regulation and Supervision after the Crisis: The Role of the Federal Reserve,20091023_bernanke_Financial_Regulation_and_Supervision_after_the_Crisis_The_Ro.txt,-0.022155943757988922,Hawkish,0.07000000000000006,False
+2009-10-19,bernanke,Asia and the Global Financial Crisis,20091019_bernanke_Asia_and_the_Global_Financial_Crisis.txt,-0.051075268817204304,Dovish,0.020000000000000018,False
+2009-10-08,bernanke,The Federal Reserve's Balance Sheet: An Update,20091008_bernanke_The_Federal_Reserves_Balance_Sheet_An_Update.txt,-0.0450381679389313,Dovish,0.030000000000000027,False
+2009-08-21,bernanke,Reflections on a Year of Crisis,20090821_bernanke_Reflections_on_a_Year_of_Crisis.txt,-0.08538763844230082,Dovish,0.09999999999999987,False
+2009-05-07,bernanke,Lessons of the Financial Crisis for Banking Supervision,20090507_bernanke_Lessons_of_the_Financial_Crisis_for_Banking_Supervision.txt,-0.009384775808133473,Hawkish,0.040000000000000036,False
+2009-04-14,bernanke,Four Questions about the Financial Crisis,20090414_bernanke_Four_Questions_about_the_Financial_Crisis.txt,-0.06351626016260163,Dovish,-0.030000000000000027,False
+2009-04-03,bernanke,The Federal Reserve's Balance Sheet,20090403_bernanke_The_Federal_Reserves_Balance_Sheet.txt,-0.030889810972798526,Neutral,0.07999999999999996,False
+2009-03-20,bernanke,The Financial Crisis and Community Banking,20090320_bernanke_The_Financial_Crisis_and_Community_Banking.txt,-0.04860731840524304,Dovish,0.020000000000000018,False
+2009-03-10,bernanke,Financial Reform to Address Systemic Risk,20090310_bernanke_Financial_Reform_to_Address_Systemic_Risk.txt,-0.04093063334769496,Neutral,0.050000000000000044,False
+2009-02-18,bernanke,Federal Reserve Policies to Ease Credit and Their Implications for the Fed's Balance Sheet,20090218_bernanke_Federal_Reserve_Policies_to_Ease_Credit_and_Their_Implicatio.txt,-0.019174041297935103,Hawkish,0.09999999999999998,False
+2009-01-13,bernanke,The Crisis and the Policy Response,20090113_bernanke_The_Crisis_and_the_Policy_Response.txt,-0.04409040385327899,Dovish,0.020000000000000018,False
+2010-11-19,bernanke,Rebalancing the Global Recovery,20101119_bernanke_Rebalancing_the_Global_Recovery.txt,-0.030666666666666665,Neutral,0.0,False
+2010-11-19,bernanke,Emerging from the Crisis: Where Do We Stand?,20101119_bernanke_Emerging_from_the_Crisis_Where_Do_We_Stand.txt,-0.026455026455026454,Neutral,0.0,False
+2010-10-15,bernanke,Monetary Policy Objectives and Tools in a Low-Inflation Environment,20101015_bernanke_Monetary_Policy_Objectives_and_Tools_in_a_Low-Inflation_Envi.txt,-0.02543859649122807,Neutral,-0.010000000000000009,False
+2010-10-04,bernanke,Fiscal Sustainability and Fiscal Rules,20101004_bernanke_Fiscal_Sustainability_and_Fiscal_Rules.txt,-0.03943044906900329,Neutral,-0.010000000000000009,False
+2010-09-24,bernanke,Implications of the Financial Crisis for Economics,20100924_bernanke_Implications_of_the_Financial_Crisis_for_Economics.txt,-0.05999387817569636,Dovish,0.0,False
+2010-08-27,bernanke,The Economic Outlook and Monetary Policy,20100827_bernanke_The_Economic_Outlook_and_Monetary_Policy.txt,-0.01360030222893842,Hawkish,0.050000000000000044,False
+2010-08-02,bernanke,Challenges for the Economy and State Governments,20100802_bernanke_Challenges_for_the_Economy_and_State_Governments.txt,-0.028942705256940343,Neutral,0.010000000000000009,False
+2010-07-12,bernanke,Restoring the Flow of Credit to Small Businesses,20100712_bernanke_Restoring_the_Flow_of_Credit_to_Small_Businesses.txt,-0.022727272727272728,Neutral,0.020000000000000018,False
+2010-05-30,bernanke,The Policy Response to the Crisis in Korea and Other Emerging Market Economies,20100530_bernanke_The_Policy_Response_to_the_Crisis_in_Korea_and_Other_Emergin.txt,-0.03333333333333333,Neutral,0.0,False
+2010-05-25,bernanke,"Central Bank Independence, Transparency, and Accountability",20100525_bernanke_Central_Bank_Independence_Transparency_and_Accountability.txt,-0.003125,Hawkish,0.040000000000000036,False
+2010-04-27,bernanke,Achieving Fiscal Sustainability,20100427_bernanke_Achieving_Fiscal_Sustainability.txt,-0.04310344827586207,Neutral,-0.06000000000000005,False
+2010-04-08,bernanke,Economic Policy:  Lessons from History,20100408_bernanke_Economic_Policy_Lessons_from_History.txt,-0.043523316062176166,Dovish,0.030000000000000027,True
+2010-04-07,bernanke,"Economic Challenges: Past, Present, and Future",20100407_bernanke_Economic_Challenges_Past_Present_and_Future.txt,-0.05709954522486104,Dovish,-0.07999999999999985,False
+2010-01-03,bernanke,Monetary Policy and the Housing Bubble,20100103_bernanke_Monetary_Policy_and_the_Housing_Bubble.txt,-0.026147588611272515,Neutral,0.0,False
+2011-11-10,bernanke,Town Hall Meeting Remarks,20111110_bernanke_Town_Hall_Meeting_Remarks.txt,-0.01566820276497696,Hawkish,0.0,False
+2011-10-18,bernanke,The Effects of the Great Recession on Central Bank Doctrine and Practice,20111018_bernanke_The_Effects_of_the_Great_Recession_on_Central_Bank_Doctrine_.txt,-0.010632911392405063,Hawkish,0.0,False
+2011-09-08,bernanke,The U.S. Economic Outlook,20110908_bernanke_The_US_Economic_Outlook.txt,-0.052591463414634144,Dovish,-0.01999999999999999,False
+2011-08-26,bernanke,The Near- and Longer-Term Prospects for the U.S. Economy,20110826_bernanke_The_Near-_and_Longer-Term_Prospects_for_the_US_Economy.txt,-0.0359882005899705,Neutral,-0.01999999999999999,False
+2011-06-14,bernanke,Fiscal Sustainability,20110614_bernanke_Fiscal_Sustainability.txt,-0.05676442762535478,Dovish,0.04999999999999999,False
+2011-06-07,bernanke,The U.S. Economic Outlook,20110607_bernanke_The_US_Economic_Outlook.txt,-0.02148997134670487,Hawkish,-0.03999999999999998,False
+2011-04-04,bernanke,"Clearinghouses, Financial Stability, and Financial Reform",20110404_bernanke_Clearinghouses_Financial_Stability_and_Financial_Reform.txt,-0.027054108216432865,Neutral,-0.030000000000000027,False
+2011-02-18,bernanke,Global Imbalances: Links to Economic and Financial Stability,20110218_bernanke_Global_Imbalances_Links_to_Economic_and_Financial_Stability.txt,-0.03312444046553268,Neutral,-0.020000000000000018,False
+2011-02-03,bernanke,The Economic Outlook and Macroeconomic Policy,20110203_bernanke_The_Economic_Outlook_and_Macroeconomic_Policy.txt,-0.025052192066805846,Neutral,0.039999999999999925,False
+2012-11-20,bernanke,The Economic Recovery and Economic Policy,20121120_bernanke_The_Economic_Recovery_and_Economic_Policy.txt,-0.05388205345778532,Dovish,0.020000000000000018,False
+2012-11-15,bernanke,Challenges in Housing and Mortgage Markets,20121115_bernanke_Challenges_in_Housing_and_Mortgage_Markets.txt,-0.036894273127753306,Neutral,-0.010000000000000009,False
+2012-10-14,bernanke,U.S. Monetary Policy and International Implications,20121014_bernanke_US_Monetary_Policy_and_International_Implications.txt,0.0,Hawkish,0.0,False
+2012-10-01,bernanke,Five Questions about the Federal Reserve and Monetary Policy,20121001_bernanke_Five_Questions_about_the_Federal_Reserve_and_Monetary_Policy.txt,-0.02318840579710145,Neutral,0.01999999999999999,False
+2012-08-31,bernanke,Monetary Policy since the Onset of the Crisis,20120831_bernanke_Monetary_Policy_since_the_Onset_of_the_Crisis.txt,-0.01433389544688027,Hawkish,-0.05000000000000002,False
+2012-05-10,bernanke,Banks and Bank Lending: The State of Play,20120510_bernanke_Banks_and_Bank_Lending_The_State_of_Play.txt,-0.028859060402684565,Neutral,0.0,False
+2012-04-13,bernanke,Some Reflections on the Crisis and the Policy Response,20120413_bernanke_Some_Reflections_on_the_Crisis_and_the_Policy_Response.txt,-0.0973305954825462,Dovish,-0.019999999999999962,False
+2012-04-09,bernanke,Fostering Financial Stability,20120409_bernanke_Fostering_Financial_Stability.txt,-0.017010309278350514,Hawkish,0.0,False
+2012-03-26,bernanke,Recent Developments in the Labor Market,20120326_bernanke_Recent_Developments_in_the_Labor_Market.txt,-0.09982094897045658,Dovish,-0.010000000000000009,False
+2012-02-10,bernanke,Housing Markets in Transition,20120210_bernanke_Housing_Markets_in_Transition.txt,-0.04824561403508772,Dovish,0.0,False
+2013-12-16,bernanke,Opening Remarks,20131216_bernanke_Opening_Remarks.txt,-0.014563106796116505,Hawkish,0.0,False
+2013-11-19,bernanke,Communication and Monetary Policy,20131119_bernanke_Communication_and_Monetary_Policy.txt,-0.011836212412028152,Hawkish,-0.020000000000000018,True
+2013-11-08,bernanke,The Crisis as a Classic Financial Panic,20131108_bernanke_The_Crisis_as_a_Classic_Financial_Panic.txt,-0.08710217755443886,Dovish,0.030000000000000027,False
+2013-10-14,bernanke,Celebrating 20 Years of the Bank of Mexico's Independence,20131014_bernanke_Celebrating_20_Years_of_the_Bank_of_Mexicos_Independence.txt,0.01757188498402556,Hawkish,0.0,False
+2013-07-10,bernanke,"A Century of U.S. Central Banking: Goals, Frameworks, Accountability",20130710_bernanke_A_Century_of_US_Central_Banking_Goals_Frameworks_Accountabil.txt,-0.005333333333333333,Hawkish,0.010000000000000009,False
+2013-05-10,bernanke,Monitoring the Financial System,20130510_bernanke_Monitoring_the_Financial_System.txt,-0.04503716659379099,Dovish,0.04000000000000001,False
+2013-03-25,bernanke,Monetary Policy and the Global Economy,20130325_bernanke_Monetary_Policy_and_the_Global_Economy.txt,-0.028363047001620744,Neutral,-0.020000000000000018,False
+2013-03-01,bernanke,Long-Term Interest Rates,20130301_bernanke_Long-Term_Interest_Rates.txt,-0.029034690799396683,Neutral,0.0,False
+2014-11-07,yellen,"Remarks at the Panel Discussion on ""Shaping the Future of the Macroeconomic Policy Mix""",20141107_yellen_Remarks_at_the_Panel_Discussion_on_Shaping_the_Future_of_the.txt,-0.03204272363150868,Neutral,-0.030000000000000027,False
+2014-08-22,yellen,Labor Market Dynamics and Monetary Policy,20140822_yellen_Labor_Market_Dynamics_and_Monetary_Policy.txt,-0.06592592592592593,Dovish,0.040000000000000036,False
+2014-07-02,yellen,Monetary Policy and Financial Stability,20140702_yellen_Monetary_Policy_and_Financial_Stability.txt,-0.026856240126382307,Hawkish,0.020000000000000018,False
+2014-05-15,yellen,Small Businesses and the Recovery,20140515_yellen_Small_Businesses_and_the_Recovery.txt,0.012396694214876033,Hawkish,-0.010000000000000009,False
+2014-04-16,yellen,Monetary Policy and the Economic Recovery,20140416_yellen_Monetary_Policy_and_the_Economic_Recovery.txt,-0.04752150757886112,Dovish,0.0,False
+2014-03-31,yellen,What the Federal Reserve Is Doing to Promote a Stronger Job Market,20140331_yellen_What_the_Federal_Reserve_Is_Doing_to_Promote_a_Stronger_Job_.txt,-0.036449147560258674,Dovish,-0.010000000000000009,False
+2014-01-03,bernanke,"The Federal Reserve:  Looking Back, Looking Forward",20140103_bernanke_The_Federal_Reserve_Looking_Back_Looking_Forward.txt,-0.024017467248908297,Neutral,0.019999999999999962,False
+2015-12-02,yellen,The Economic Outlook and Monetary Policy,20151202_yellen_The_Economic_Outlook_and_Monetary_Policy.txt,-0.018503937007874015,Hawkish,0.029999999999999916,False
+2015-09-24,yellen,Inflation Dynamics and Monetary Policy,20150924_yellen_Inflation_Dynamics_and_Monetary_Policy.txt,-0.03484119345524543,Dovish,-0.029999999999999916,False
+2015-07-10,yellen,Recent Developments and the Outlook for the Economy,20150710_yellen_Recent_Developments_and_the_Outlook_for_the_Economy.txt,-0.02502606882168926,Hawkish,0.050000000000000044,False
+2015-05-22,yellen,The Outlook for the Economy,20150522_yellen_The_Outlook_for_the_Economy.txt,-0.012391573729863693,Hawkish,0.040000000000000036,False
+2015-03-27,yellen,Normalizing Monetary Policy:  Prospects and Perspectives,20150327_yellen_Normalizing_Monetary_Policy_Prospects_and_Perspectives.txt,-0.03373647358370465,Neutral,-0.030000000000000027,False
+2016-10-14,yellen,Macroeconomic Research After the Crisis,20161014_yellen_Macroeconomic_Research_After_the_Crisis.txt,-0.034047919293820936,Dovish,-0.010000000000000009,False
+2016-08-26,yellen,"The Federal Reserve's Monetary Policy Toolkit: Past, Present, and Future",20160826_yellen_The_Federal_Reserves_Monetary_Policy_Toolkit_Past_Present_an.txt,-0.029559562518474726,Neutral,0.05999999999999994,False
+2016-06-06,yellen,Current Conditions and the Outlook for the U.S. Economy,20160606_yellen_Current_Conditions_and_the_Outlook_for_the_US_Economy.txt,-0.02567237163814181,Hawkish,0.020000000000000018,False
+2016-03-29,yellen,"The Outlook, Uncertainty, and Monetary Policy",20160329_yellen_The_Outlook_Uncertainty_and_Monetary_Policy.txt,-0.024671052631578948,Hawkish,-0.10999999999999999,False
+2017-10-20,yellen,A Challenging Decade and a Question for the Future,20171020_yellen_A_Challenging_Decade_and_a_Question_for_the_Future.txt,-0.028225806451612902,Neutral,0.020000000000000018,False
+2017-10-15,yellen,The U.S. Economy and Monetary Policy,20171015_yellen_The_US_Economy_and_Monetary_Policy.txt,-0.01509433962264151,Hawkish,0.0,False
+2017-09-26,yellen,"Inflation, Uncertainty, and Monetary Policy",20170926_yellen_Inflation_Uncertainty_and_Monetary_Policy.txt,-0.029950083194675542,Neutral,0.010000000000000009,False
+2017-08-25,yellen,Financial Stability a Decade after the Onset of the Crisis,20170825_yellen_Financial_Stability_a_Decade_after_the_Onset_of_the_Crisis.txt,-0.03880764904386952,Dovish,0.020000000000000018,False
+2017-03-03,yellen,From Adding Accommodation to Scaling It Back,20170303_yellen_From_Adding_Accommodation_to_Scaling_It_Back.txt,-0.03134796238244514,Neutral,0.0,False
+2017-01-19,yellen,The Economic Outlook and the Conduct of Monetary Policy,20170119_yellen_The_Economic_Outlook_and_the_Conduct_of_Monetary_Policy.txt,-0.028008618036318867,Neutral,0.020000000000000018,False
+2017-01-18,yellen,The Goals of Monetary Policy and How We Pursue Them,20170118_yellen_The_Goals_of_Monetary_Policy_and_How_We_Pursue_Them.txt,-0.03994082840236687,Dovish,0.06000000000000005,False
+2018-11-28,powell,The Federal Reserve's Framework for Monitoring Financial Stability,20181128_powell_The_Federal_Reserves_Framework_for_Monitoring_Financial_Stab.txt,-0.04899559039686428,Dovish,-0.020000000000000018,False
+2018-10-02,powell,Monetary Policy and Risk Management at a Time of Low Inflation and Low Unemployment,20181002_powell_Monetary_Policy_and_Risk_Management_at_a_Time_of_Low_Inflati.txt,-0.03982930298719772,Dovish,0.0,False
+2018-09-27,powell,Brief Remarks on the U.S. Economy,20180927_powell_Brief_Remarks_on_the_US_Economy.txt,0.03271028037383177,Hawkish,0.0,False
+2018-08-24,powell,Monetary Policy in a Changing Economy,20180824_powell_Monetary_Policy_in_a_Changing_Economy.txt,-0.03936348408710218,Dovish,0.020000000000000018,False
+2018-06-20,powell,Monetary Policy at a Time of Uncertainty and Tight Labor Markets,20180620_powell_Monetary_Policy_at_a_Time_of_Uncertainty_and_Tight_Labor_Mar.txt,-0.05855855855855856,Dovish,0.020000000000000018,False
+2018-05-25,powell,Financial Stability and Central Bank Transparency,20180525_powell_Financial_Stability_and_Central_Bank_Transparency.txt,0.03807615230460922,Hawkish,-0.020000000000000018,False
+2018-05-08,powell,Monetary Policy Influences on Global Financial Conditions and International Capital Flows,20180508_powell_Monetary_Policy_Influences_on_Global_Financial_Conditions_an.txt,-0.01607717041800643,Neutral,0.019999999999999574,False
+2018-04-06,powell,The Outlook for the U.S. Economy,20180406_powell_The_Outlook_for_the_US_Economy.txt,-0.041935483870967745,Dovish,-0.029999999999999805,False
+2019-11-25,powell,Building on the Gains from the Long Expansion,20191125_powell_Building_on_the_Gains_from_the_Long_Expansion.txt,0.008481764206955046,Hawkish,0.0,False
+2019-10-09,powell,Opening Remarks,20191009_powell_Opening_Remarks.txt,0.02040816326530612,Hawkish,0.050000000000000044,False
+2019-10-08,powell,Data-Dependent Monetary Policy in an Evolving Economy,20191008_powell_Data-Dependent_Monetary_Policy_in_an_Evolving_Economy.txt,-0.009965122072745391,Neutral,-0.040000000000000036,False
+2019-10-04,powell,Opening Remarks,20191004_powell_Opening_Remarks.txt,0.010810810810810811,Hawkish,0.010000000000000009,False
+2019-08-23,powell,Challenges for Monetary Policy,20190823_powell_Challenges_for_Monetary_Policy.txt,-0.04499196572040707,Dovish,-0.10000000000000009,False
+2019-07-16,powell,Monetary Policy in the Post-Crisis Era,20190716_powell_Monetary_Policy_in_the_Post-Crisis_Era.txt,-0.03024747937671861,Neutral,0.040000000000000036,False
+2019-06-25,powell,Economic Outlook and Monetary Policy Review,20190625_powell_Economic_Outlook_and_Monetary_Policy_Review.txt,-0.00482315112540193,Hawkish,-0.010000000000000009,False
+2019-06-04,powell,Opening Remarks,20190604_powell_Opening_Remarks.txt,-0.029784537389100127,Neutral,0.05999999999999983,False
+2019-05-20,powell,Business Debt and Our Dynamic Financial System,20190520_powell_Business_Debt_and_Our_Dynamic_Financial_System.txt,-0.0369935408103347,Dovish,0.009999999999999787,False
+2019-03-08,powell,Monetary Policy: Normalization and the Road Ahead,20190308_powell_Monetary_Policy_Normalization_and_the_Road_Ahead.txt,-0.019540791402051783,Neutral,-0.020000000000000018,False
+2019-02-28,powell,Recent Economic Developments and Longer-Term Challenges,20190228_powell_Recent_Economic_Developments_and_Longer-Term_Challenges.txt,-0.029748283752860413,Neutral,0.020000000000000018,True
+2020-10-06,powell,Recent Economic Developments and the Challenges Ahead,20201006_powell_Recent_Economic_Developments_and_the_Challenges_Ahead.txt,-0.05087881591119334,Dovish,0.0,False
+2020-08-27,powell,New Economic Challenges and the Fed's Monetary Policy Review,20200827_powell_New_Economic_Challenges_and_the_Feds_Monetary_Policy_Review.txt,-0.015506807866868382,Neutral,0.0,False
+2020-05-13,powell,Current Economic Issues,20200513_powell_Current_Economic_Issues.txt,-0.08836524300441827,Dovish,-0.010000000000000009,False
+2020-04-09,powell,COVID-19 and the Economy,20200409_powell_COVID-19_and_the_Economy.txt,-0.014814814814814815,Neutral,-0.04000000000000001,False
+2021-08-27,powell,Monetary Policy in the Time of COVID,20210827_powell_Monetary_Policy_in_the_Time_of_COVID.txt,-0.03311617806731813,Dovish,-0.03,False
+2021-02-10,powell,Getting Back to a Strong Labor Market,20210210_powell_Getting_Back_to_a_Strong_Labor_Market.txt,-0.03880190605854323,Dovish,0.0,False
+2022-11-30,powell,Inflation and the Labor Market,20221130_powell_Inflation_and_the_Labor_Market.txt,-0.05481283422459893,Dovish,-0.10000000000000053,False
+2022-08-26,powell,Monetary Policy and Price Stability,20220826_powell_Monetary_Policy_and_Price_Stability.txt,0.004491017964071856,Hawkish,0.020000000000000018,False
+2022-03-21,powell,Restoring Price Stability,20220321_powell_Restoring_Price_Stability.txt,-0.029498525073746312,Neutral,0.17000000000000015,False
+2023-12-01,powell,Opening Remarks,20231201_powell_Opening_Remarks.txt,-0.007853403141361256,Hawkish,-0.17000000000000082,False
+2023-11-09,powell,Opening Remarks,20231109_powell_Opening_Remarks.txt,-0.048446069469835464,Dovish,0.10000000000000053,False
+2023-10-19,powell,Opening Remarks,20231019_powell_Opening_Remarks.txt,-0.03164556962025317,Neutral,-0.05000000000000071,False
+2023-08-25,powell,Inflation:  Progress and the Path Ahead,20230825_powell_Inflation_Progress_and_the_Path_Ahead.txt,-0.03052866716306776,Neutral,0.04999999999999982,False
+2023-06-29,powell,Financial Stability and Economic Developments,20230629_powell_Financial_Stability_and_Economic_Developments.txt,-0.058823529411764705,Dovish,0.16000000000000014,False
+2023-01-10,powell,"Panel on ""Central Bank Independence and the MandateâEvolving Views""",20230110_powell_Panel_on_Central_Bank_Independence_and_the_MandateâEvolving_.txt,0.03650793650793651,Hawkish,0.04999999999999982,False
+2024-11-14,powell,Economic Outlook,20241114_powell_Economic_Outlook.txt,-0.006756756756756757,Hawkish,0.07000000000000028,False
+2024-09-30,powell,Economic Outlook,20240930_powell_Economic_Outlook.txt,0.0,Hawkish,0.11000000000000032,False
+2024-08-23,powell,Review and Outlook,20240823_powell_Review_and_Outlook.txt,-0.04198062432723358,Dovish,-0.0900000000000003,False
+2024-04-03,powell,Opening Remarks,20240403_powell_Opening_Remarks.txt,0.010355029585798817,Hawkish,-0.020000000000000462,False
+2025-10-14,powell,Understanding the Fedâs Balance Sheet,20251014_powell_Understanding_the_Fedâs_Balance_Sheet.txt,-0.032809611829944546,Neutral,-0.040000000000000036,False
+2025-09-23,powell,Economic Outlook,20250923_powell_Economic_Outlook.txt,-0.026785714285714284,Neutral,-0.08000000000000007,False
+2025-08-22,powell,Monetary Policy and the Fedâs Framework Review,20250822_powell_Monetary_Policy_and_the_Fedâs_Framework_Review.txt,-0.03264691109994977,Neutral,-0.10999999999999988,False
+2025-05-15,powell,Opening Remarks,20250515_powell_Opening_Remarks.txt,-0.028888888888888888,Neutral,-0.08999999999999986,False
+2025-04-16,powell,Economic Outlook,20250416_powell_Economic_Outlook.txt,0.011961722488038277,Hawkish,-0.06999999999999984,False
+2025-04-04,powell,Economic Outlook,20250404_powell_Economic_Outlook.txt,0.0,Hawkish,-0.029999999999999805,False
+2025-03-07,powell,Economic Outlook,20250307_powell_Economic_Outlook.txt,0.0,Hawkish,0.03000000000000025,False

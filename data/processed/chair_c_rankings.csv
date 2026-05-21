@@ -1,0 +1,45 @@
+date,chair,title,filename,lm_score,rank,bucket
+2018-04-06,Chair C,The Outlook for the U.S. Economy,20180406_chair_c_The_Outlook_for_the_US_Economy.txt,-0.041935483870967745,10,Dovish
+2018-05-08,Chair C,Monetary Policy Influences on Global Financial Conditions and International Capital Flows,20180508_chair_c_Monetary_Policy_Influences_on_Global_Financial_Conditions_an.txt,-0.01607717041800643,26,Neutral
+2018-05-25,Chair C,Financial Stability and Central Bank Transparency,20180525_chair_c_Financial_Stability_and_Central_Bank_Transparency.txt,0.03807615230460922,44,Hawkish
+2018-06-20,Chair C,Monetary Policy at a Time of Uncertainty and Tight Labor Markets,20180620_chair_c_Monetary_Policy_at_a_Time_of_Uncertainty_and_Tight_Labor_Mar.txt,-0.05855855855855856,3,Dovish
+2018-08-24,Chair C,Monetary Policy in a Changing Economy,20180824_chair_c_Monetary_Policy_in_a_Changing_Economy.txt,-0.03936348408710218,12,Dovish
+2018-09-27,Chair C,Brief Remarks on the U.S. Economy,20180927_chair_c_Brief_Remarks_on_the_US_Economy.txt,0.03271028037383177,42,Hawkish
+2018-10-02,Chair C,Monetary Policy and Risk Management at a Time of Low Inflation and Low Unemployment,20181002_chair_c_Monetary_Policy_and_Risk_Management_at_a_Time_of_Low_Inflati.txt,-0.03982930298719772,11,Dovish
+2018-11-28,Chair C,The Federal Reserve's Framework for Monitoring Financial Stability,20181128_chair_c_The_Federal_Reserves_Framework_for_Monitoring_Financial_Stab.txt,-0.04899559039686428,6,Dovish
+2019-03-08,Chair C,Monetary Policy: Normalization and the Road Ahead,20190308_chair_c_Monetary_Policy_Normalization_and_the_Road_Ahead.txt,-0.019540791402051783,25,Neutral
+2019-05-20,Chair C,Business Debt and Our Dynamic Financial System,20190520_chair_c_Business_Debt_and_Our_Dynamic_Financial_System.txt,-0.0369935408103347,14,Dovish
+2019-06-04,Chair C,Opening Remarks,20190604_chair_c_Opening_Remarks.txt,-0.029784537389100127,21,Neutral
+2019-06-25,Chair C,Economic Outlook and Monetary Policy Review,20190625_chair_c_Economic_Outlook_and_Monetary_Policy_Review.txt,-0.00482315112540193,32,Hawkish
+2019-07-16,Chair C,Monetary Policy in the Post-Crisis Era,20190716_chair_c_Monetary_Policy_in_the_Post-Crisis_Era.txt,-0.03024747937671861,20,Neutral
+2019-08-23,Chair C,Challenges for Monetary Policy,20190823_chair_c_Challenges_for_Monetary_Policy.txt,-0.04499196572040707,8,Dovish
+2019-10-04,Chair C,Opening Remarks,20191004_chair_c_Opening_Remarks.txt,0.010810810810810811,39,Hawkish
+2019-10-08,Chair C,Data-Dependent Monetary Policy in an Evolving Economy,20191008_chair_c_Data-Dependent_Monetary_Policy_in_an_Evolving_Economy.txt,-0.009965122072745391,29,Neutral
+2019-10-09,Chair C,Opening Remarks,20191009_chair_c_Opening_Remarks.txt,0.02040816326530612,41,Hawkish
+2019-11-25,Chair C,Building on the Gains from the Long Expansion,20191125_chair_c_Building_on_the_Gains_from_the_Long_Expansion.txt,0.008481764206955046,37,Hawkish
+2020-04-09,Chair C,COVID-19 and the Economy,20200409_chair_c_COVID-19_and_the_Economy.txt,-0.014814814814814815,28,Neutral
+2020-05-13,Chair C,Current Economic Issues,20200513_chair_c_Current_Economic_Issues.txt,-0.08836524300441827,1,Dovish
+2020-08-27,Chair C,New Economic Challenges and the Fed's Monetary Policy Review,20200827_chair_c_New_Economic_Challenges_and_the_Feds_Monetary_Policy_Review.txt,-0.015506807866868382,27,Neutral
+2020-10-06,Chair C,Recent Economic Developments and the Challenges Ahead,20201006_chair_c_Recent_Economic_Developments_and_the_Challenges_Ahead.txt,-0.05087881591119334,5,Dovish
+2021-02-10,Chair C,Getting Back to a Strong Labor Market,20210210_chair_c_Getting_Back_to_a_Strong_Labor_Market.txt,-0.03880190605854323,13,Dovish
+2021-08-27,Chair C,Monetary Policy in the Time of COVID,20210827_chair_c_Monetary_Policy_in_the_Time_of_COVID.txt,-0.03311617806731813,15,Neutral
+2022-03-21,Chair C,Restoring Price Stability,20220321_chair_c_Restoring_Price_Stability.txt,-0.029498525073746312,22,Neutral
+2022-08-26,Chair C,Monetary Policy and Price Stability,20220826_chair_c_Monetary_Policy_and_Price_Stability.txt,0.004491017964071856,36,Hawkish
+2022-11-30,Chair C,Inflation and the Labor Market,20221130_chair_c_Inflation_and_the_Labor_Market.txt,-0.05481283422459893,4,Dovish
+2023-01-10,Chair C,"Panel on ""Central Bank Independence and the MandateâEvolving Views""",20230110_chair_c_Panel_on_Central_Bank_Independence_and_the_MandateâEvolving_.txt,0.03650793650793651,43,Hawkish
+2023-06-29,Chair C,Financial Stability and Economic Developments,20230629_chair_c_Financial_Stability_and_Economic_Developments.txt,-0.058823529411764705,2,Dovish
+2023-08-25,Chair C,Inflation:  Progress and the Path Ahead,20230825_chair_c_Inflation_Progress_and_the_Path_Ahead.txt,-0.03052866716306776,19,Neutral
+2023-10-19,Chair C,Opening Remarks,20231019_chair_c_Opening_Remarks.txt,-0.03164556962025317,18,Neutral
+2023-11-09,Chair C,Opening Remarks,20231109_chair_c_Opening_Remarks.txt,-0.048446069469835464,7,Dovish
+2023-12-01,Chair C,Opening Remarks,20231201_chair_c_Opening_Remarks.txt,-0.007853403141361256,30,Hawkish
+2024-04-03,Chair C,Opening Remarks,20240403_chair_c_Opening_Remarks.txt,0.010355029585798817,38,Hawkish
+2024-08-23,Chair C,Review and Outlook,20240823_chair_c_Review_and_Outlook.txt,-0.04198062432723358,9,Dovish
+2024-09-30,Chair C,Economic Outlook,20240930_chair_c_Economic_Outlook.txt,0.0,34,Hawkish
+2024-11-14,Chair C,Economic Outlook,20241114_chair_c_Economic_Outlook.txt,-0.006756756756756757,31,Hawkish
+2025-03-07,Chair C,Economic Outlook,20250307_chair_c_Economic_Outlook.txt,0.0,34,Hawkish
+2025-04-04,Chair C,Economic Outlook,20250404_chair_c_Economic_Outlook.txt,0.0,34,Hawkish
+2025-04-16,Chair C,Economic Outlook,20250416_chair_c_Economic_Outlook.txt,0.011961722488038277,40,Hawkish
+2025-05-15,Chair C,Opening Remarks,20250515_chair_c_Opening_Remarks.txt,-0.028888888888888888,23,Neutral
+2025-08-22,Chair C,Monetary Policy and the Fedâs Framework Review,20250822_chair_c_Monetary_Policy_and_the_Fedâs_Framework_Review.txt,-0.03264691109994977,17,Neutral
+2025-09-23,Chair C,Economic Outlook,20250923_chair_c_Economic_Outlook.txt,-0.026785714285714284,24,Neutral
+2025-10-14,Chair C,Understanding the Fedâs Balance Sheet,20251014_chair_c_Understanding_the_Fedâs_Balance_Sheet.txt,-0.032809611829944546,16,Neutral

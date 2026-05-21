@@ -106,6 +106,104 @@ Accuracy is reported per regime and overall.
 
 ---
 
+## Experiment 1 — Improved Lexicon Methodology (In Progress)
+
+Experiment 0 showed that applying the Loughran-McDonald lexicon directly to whole speeches doesn't reliably predict yield direction (42% overall — worse than a coin flip). The main problems were:
+
+1. **Whole-speech scoring is too blurry.** A single speech might say "the labor market is strong" in one sentence and "but inflation has fallen short of our target" in the next. Scoring the whole thing as one unit averages out the signal.
+2. **Common words drown out the signal.** Words like "economy", "market", "federal", and "rate" appear in nearly every speech and add noise without carrying any hawk/dove information.
+3. **Word forms aren't unified.** "Tightening", "tightened", and "tightens" are treated as three different words even though they mean the same thing.
+
+This experiment rebuilds the scoring pipeline from scratch at the sentence level, with careful text preprocessing to address all three problems.
+
+---
+
+### Step 1 — Split corpus by regime ✅ complete
+
+We split the 138 filtered monetary-policy speeches into three separate files, one per Fed Chair. Each Chair is treated as its own independent regime because the language, economic context, and policy stance conventions differ meaningfully across eras.
+
+| File | Chair | Speeches |
+|------|-------|----------|
+| `speeches_bernanke.csv` | Ben Bernanke | 71 |
+| `speeches_yellen.csv` | Janet Yellen | 22 |
+| `speeches_powell.csv` | Jerome Powell | 45 |
+
+---
+
+### Step 2 — Sentence tokenization and contrastive splitting ✅ complete
+
+**Script:** `src/build_sentence_corpus.py`
+
+Instead of scoring a whole speech, we break it down into individual sentence fragments. This matters because Fed speeches frequently make opposing claims within a single sentence — for example:
+
+> *"The labor market remains strong, **but** inflation has fallen below target."*
+
+If you score this sentence as a unit, the hawkish signal (strong labor market) and dovish signal (low inflation) cancel out. Splitting on the word "but" gives two clean fragments that can each be scored independently.
+
+**How it works:**
+1. Use spaCy (a standard NLP library) to split each speech into individual sentences
+2. Further split any sentence that contains a *contrastive connector* — a word that signals a change in direction: **but**, **however**, **while**, **although**, or a semicolon (`;`)
+3. Discard any fragment shorter than 8 words (removes section headers, stubs, and other noise)
+
+**"However" is handled carefully.** A sentence like *"...as the crisis has persisted, however, the relationships..."* uses "however" as a parenthetical, not a contrast — it shouldn't be split. We only split on "however" when it's preceded by a comma or semicolon AND followed by a comma, which is the pattern for genuine clause-level contrast.
+
+| Regime | Speeches | Total fragments | From connector splits |
+|--------|----------|-----------------|-----------------------|
+| Bernanke | 71 | 10,560 | 799 |
+| Yellen | 22 | 4,208 | 274 |
+| Powell | 45 | 5,087 | 197 |
+
+Output: `sentences_bernanke.csv`, `sentences_yellen.csv`, `sentences_powell.csv`
+
+---
+
+### Step 3 — Lemmatization ✅ complete
+
+**Script:** `src/lemmatize_and_damp.py`
+
+Lemmatization means reducing each word to its base (dictionary) form. For example:
+- "tightening", "tightened", "tightens" → all become **"tighten"**
+- "raised", "raising", "raises" → all become **"raise"**
+- "economies", "economy's" → both become **"economy"**
+
+Without this step, the same concept gets counted as multiple different words, which dilutes the signal in any word-frequency analysis. We also lowercase everything and remove stopwords (common function words like "the", "a", "is", "of" that carry no policy meaning) and punctuation.
+
+**Why spaCy instead of a simple rule?** Lemmatization is harder than it looks — the right base form often depends on the word's grammatical role. "Better" should become "good" (adjective), not "better" or "bet". spaCy uses a trained model that looks at context, not just the word itself.
+
+The result is a `lemmas` column added to each sentence file — a cleaned, normalized version of each fragment ready for scoring.
+
+---
+
+### Step 4 — IDF Damping ✅ complete
+
+**Script:** `src/lemmatize_and_damp.py`
+
+Even after lemmatization, many words still appear in almost every speech and carry no useful signal. "Economy" appears in 100% of Bernanke speeches. "Market", "federal", "policy", "rate" — all above 90%. Counting these words when trying to detect hawk vs. dove stance is like trying to hear a specific instrument in a concert by measuring total volume.
+
+**IDF (Inverse Document Frequency)** is a standard technique for measuring how rare or common a word is across a collection of documents. We use a simplified threshold version:
+
+| Word frequency across speeches | Multiplier applied |
+|--------------------------------|--------------------|
+| Appears in **> 90%** of speeches | **0.0** — zeroed out entirely (pure boilerplate) |
+| Appears in **> 50%** of speeches | **0.3** — kept but downweighted to 30% |
+| Appears in **≤ 50%** of speeches | **1.0** — kept at full weight (genuinely differentiating) |
+
+Frequency is computed **per regime** and at the **speech level** (not fragment level) — a word "counts" as appearing in a speech if it shows up anywhere in that speech. This is intentional: "inflation" appears in maybe 30% of individual sentence fragments but in 90%+ of full speeches. Speech-level frequency correctly identifies it as common context rather than a differentiating signal.
+
+**What gets zeroed for each regime (examples):**
+
+| Regime | Sample zeroed words (DF > 90%) |
+|--------|-------------------------------|
+| Bernanke | economy, economic, market, federal, policy, rate, bank, risk, credit |
+| Yellen | important, large, strong, low, price, economy, rate |
+| Powell | economy, economic, market, federal, policy |
+
+Two outputs are saved per regime:
+- `idf_weights_{chair}.csv` — the full word list with doc frequency and multiplier (used at scoring time)
+- `damped_lemmas` column in `sentences_{chair}.csv` — the cleaned fragment text with 0.0-weight words removed
+
+---
+
 ## Data Sources
 
 | Source | Description | Series |
@@ -129,19 +227,27 @@ Accuracy is reported per regime and overall.
 fedspeak-project/
 ├── data/
 │   ├── raw/
-│   │   ├── speeches/                    # one .txt file per speech (242 total)
-│   │   └── fred/                        # raw FRED series as CSV
+│   │   ├── speeches/                        # one .txt file per speech (242 total)
+│   │   └── fred/                            # raw FRED series as CSV
 │   └── processed/
-│       ├── speeches.csv                 # manifest: date, chair, title, word_count, url, filename
-│       ├── macro_context.csv            # speeches + aligned macro snapshot (output of fetch_fred.py)
-│       ├── fomc_calendar.csv            # FOMC announcement dates 2008–2025 (output of fetch_fomc.py)
-│       ├── speeches_filtered.csv        # all 242 with filter decisions (output of phase1_filter.py)
-│       └── speeches_monetary_policy.csv # 138 kept monetary-policy speeches (output of phase1_filter.py)
+│       ├── speeches.csv                     # manifest: date, chair, title, word_count, url, filename
+│       ├── macro_context.csv                # speeches + aligned macro snapshot
+│       ├── fomc_calendar.csv                # FOMC announcement dates 2008–2025
+│       ├── speeches_filtered.csv            # all 242 with filter decisions
+│       ├── speeches_monetary_policy.csv     # 138 kept monetary-policy speeches
+│       ├── speeches_{chair}.csv             # per-regime corpus (bernanke / yellen / powell)
+│       ├── sentences_{chair}.csv            # sentence fragments + lemmas + damped_lemmas
+│       ├── idf_weights_{chair}.csv          # lemma → doc_freq → multiplier lookup table
+│       ├── chair_{a|b|c}_rankings.csv       # anonymized hawk/dove rankings (Experiment 0)
+│       └── experiment0_yield_results.csv    # per-speech yield direction test results
 ├── src/
-│   ├── scrape_speeches.py               # Phase 0: Fed speech scraper
-│   ├── fetch_fred.py                    # Phase 0: FRED macro data + macro_context.csv
-│   ├── fetch_fomc.py                    # Phase 0: FOMC meeting calendar scraper
-│   └── phase1_filter.py                 # Phase 1: 2-stage LLM relevance filter
+│   ├── scrape_speeches.py                   # Phase 0: Fed speech scraper
+│   ├── fetch_fred.py                        # Phase 0: FRED macro data + macro_context.csv
+│   ├── fetch_fomc.py                        # Phase 0: FOMC meeting calendar scraper
+│   ├── phase1_filter.py                     # Phase 1: 2-stage LLM relevance filter
+│   ├── experiment0_yield_test.py            # Experiment 0: LM lexicon scoring + yield test
+│   ├── build_sentence_corpus.py             # Experiment 1 step 2: sentence tokenization + splitting
+│   └── lemmatize_and_damp.py               # Experiment 1 steps 3–4: lemmatization + IDF damping
 ├── requirements.txt
 └── README.md
 ```
