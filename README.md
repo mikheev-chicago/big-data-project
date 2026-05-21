@@ -261,6 +261,70 @@ Outputs: `regression_results.csv` (tidy per-coefficient table, all 7 specs), `re
 
 ---
 
+### Step 7 — Validation ✅ complete
+
+**Script:** `src/validation.py`
+
+Three validation checks against the dictionary-based scores.
+
+---
+
+#### 7a — Train/test split OOS R²
+
+Train on pre-2021 speeches (116 total: all Bernanke + all Yellen + Powell 2018–2020). Test on post-2021 Powell speeches (22). Two OOS R² flavours: test-mean benchmark (standard) and train-mean benchmark (Campbell & Thompson 2008, more conservative).
+
+| Spec | IS R² | OOS R² (vs test mean) | OOS R² (C&T, vs train mean) |
+|------|-------|-----------------------|-----------------------------|
+| S1 Macro only | 0.033 | −0.413 | −0.381 |
+| S2 +Hawkishness | 0.034 | −0.420 | −0.389 |
+| S3 +FOMC×Hawk | 0.044 | −0.444 | −0.411 |
+| S4 +Chair FEs | 0.104 | −0.613 | −0.577 |
+
+**All OOS R² values are negative** — every specification predicts the 22 out-of-sample speeches *worse* than a naive mean forecast. S4, the most complex model, is the worst out-of-sample performer, which is a classic overfitting signature from fitting 9 parameters on 116 observations. The dictionary-based hawkishness score adds no OOS predictive power beyond macro controls.
+
+---
+
+#### 7b — Time-series sanity check
+
+Expected for Powell: hawkishness should **peak Q3 2022** (aggressive 75bp hiking cycle) and **trough Q2 2020** (COVID response, rates cut to zero, massive QE).
+
+**Powell quarterly hawkishness (selected):**
+
+| Quarter | N | Avg H | Note |
+|---------|---|-------|------|
+| 2019Q4 | 4 | −0.815 | **actual trough** |
+| 2020Q2 | 2 | −0.242 | expected trough (rank #6 most dovish) |
+| 2022Q1 | 1 | +1.716 | — |
+| 2022Q3 | 1 | +0.930 | expected peak (rank #7) |
+| 2023Q4 | 3 | +2.386 | **actual peak** |
+
+**The sanity check fails on both ends.** The actual peak is Q4 2023 (not Q3 2022) — driven by three "Opening Remarks" speeches at financial stability conferences that score hawkish because they use stability/risk language, not because the Fed was actively tightening. The actual trough is Q4 2019 (not Q2 2020) — the 2019 "patience" and insurance-cut era — while the COVID-response speeches (Q2 2020) only rank 6th most dovish, possibly because they mix dovish monetary policy language with hawkish risk/stability language. Both failures trace back to the same root cause: the word list cannot distinguish monetary-policy context from financial-stability context.
+
+Partial sanity holds for Bernanke and Yellen: the Bernanke trough (Q4 2012) coincides with QE3 announcement; the Yellen trough (Q1 2016) coincides with the pause in rate hikes amid market volatility.
+
+---
+
+#### 7c — Inter-score correlations
+
+Pearson correlations among the four measures (pooled, n=138):
+
+| | hawk_z | dove_z | net_z | hawkishness |
+|--|--------|--------|-------|-------------|
+| **hawk_z** | 1.000 | +0.015 | +0.622 | +0.721 |
+| **dove_z** | +0.015 | 1.000 | −0.769 | −0.681 |
+| **net_z** | +0.622 | −0.769 | 1.000 | +0.990 |
+| **hawkishness** | +0.721 | −0.681 | +0.990 | 1.000 |
+
+Two key findings:
+
+1. **hawk_z and dove_z are uncorrelated (r = 0.015).** The hawk and dove term channels are statistically independent — a speech with many hawk-coded words does not have fewer dove-coded words, and vice versa. This confirms that the two channels are measuring different aspects of the speech rather than being two sides of a single axis.
+
+2. **net_z and the composite hawkishness score are almost perfectly correlated (r = 0.990).** The composite `(hawk_z − dove_z + net_z) / 3` is effectively just a rescaled net_z — the three-way averaging adds minimal independent information. Since net_z already encodes the hawk−dove difference, the composite is dominated by it.
+
+Outputs: `oos_results.csv`, `hawkishness_quarterly.csv`, `score_correlations.csv`.
+
+---
+
 ## Data Sources
 
 | Source | Description | Series |
@@ -298,7 +362,10 @@ fedspeak-project/
 │       ├── speech_scores_{chair}.csv        # per-speech hawkishness score, label, yield data
 │       ├── yield_results_abg.csv            # accuracy summary: correct/total per regime
 │       ├── regression_results.csv           # tidy coefficient table (all 7 specs)
-│       └── regression_summary.csv           # per-spec model stats (N, R², Adj R²)
+│       ├── regression_summary.csv           # per-spec model stats (N, R², Adj R²)
+│       ├── oos_results.csv                  # OOS R² per spec (train/test split 2021)
+│       ├── hawkishness_quarterly.csv        # quarterly avg hawkishness by regime
+│       └── score_correlations.csv           # pairwise Pearson r among sub-scores
 ├── src/
 │   ├── scrape_speeches.py                   # Phase 0: Fed speech scraper
 │   ├── fetch_fred.py                        # Phase 0: FRED macro data + macro_context.csv
@@ -307,7 +374,8 @@ fedspeak-project/
 │   ├── build_sentence_corpus.py             # Experiment 1 step 2: sentence tokenization + splitting
 │   ├── lemmatize_and_damp.py               # Experiment 1 steps 3–4: lemmatization + IDF damping
 │   ├── score_hawkishness.py                # Experiment 1 step 5: A&BG dictionary scoring + yield test
-│   └── regression_analysis.py             # Experiment 1 step 6: OLS regression (S1–S5)
+│   ├── regression_analysis.py             # Experiment 1 step 6: OLS regression (S1–S5)
+│   └── validation.py                      # Experiment 1 step 7: OOS R², sanity check, correlations
 ├── requirements.txt
 └── README.md
 ```
