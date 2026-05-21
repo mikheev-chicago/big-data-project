@@ -9,3 +9,6 @@ fredapi>=0.5.0
 matplotlib>=3.7.0
 anthropic>=0.42.0
 spacy>=3.7.0
+trueskill>=0.4.5
+pytest>=7.4.0
+pytest-asyncio>=0.23.0
