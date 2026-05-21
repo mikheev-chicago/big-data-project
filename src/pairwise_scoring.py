@@ -329,3 +329,86 @@ async def run_tournament(
 
     pd.DataFrame(results).to_csv(results_path, index=False)
     return pd.DataFrame(results)
+
+
+async def main():
+    api_key = os.getenv("ANTHROPIC_API_KEY")
+    if not api_key:
+        sys.exit(
+            "Error: ANTHROPIC_API_KEY not set.\n"
+            "Run: export ANTHROPIC_API_KEY=sk-ant-..."
+        )
+
+    client    = anthropic.AsyncAnthropic(api_key=api_key)
+    macro     = pd.read_csv(PROCESSED / "macro_context.csv")
+    semaphore = asyncio.Semaphore(MAX_CONCURRENT)
+    all_scores: list[pd.DataFrame] = []
+
+    for chair in ["bernanke", "yellen", "powell"]:
+        log.info(f"\n{'='*60}")
+        log.info(f"Regime: {chair}")
+
+        # ── Stage 1: Sentence filter ──────────────────────────────────
+        filtered_path = PROCESSED / f"filtered_sentences_{chair}.csv"
+        if filtered_path.exists():
+            log.info(f"  Stage 1: Loading cached → {filtered_path.name}")
+            filtered = pd.read_csv(filtered_path)
+        else:
+            log.info(f"  Stage 1: Filtering sentences for monetary policy content...")
+            sentences = pd.read_csv(PROCESSED / f"sentences_{chair}.csv")
+            log.info(f"    Input: {len(sentences)} sentences")
+            filtered = await filter_all_sentences(sentences, client, semaphore)
+            filtered.to_csv(filtered_path, index=False)
+            pct = len(filtered) / len(sentences) * 100
+            log.info(f"    Kept: {len(filtered)} ({pct:.0f}%) → saved {filtered_path.name}")
+
+        # ── Stage 2: Build speech representations ────────────────────
+        log.info(f"  Stage 2: Building speech representations...")
+        representations = build_speech_representations(filtered, macro)
+        filenames = list(representations.keys())
+        log.info(f"    {len(filenames)} speeches")
+
+        # ── Stage 3: Round-robin tournament ──────────────────────────
+        results_path = PROCESSED / f"pairwise_results_{chair}.csv"
+        pairs = generate_pairs(filenames)
+        log.info(f"  Stage 3: Tournament — {len(pairs)} pairs, {MAX_CONCURRENT} concurrent...")
+        results_df = await run_tournament(pairs, representations, client, results_path, semaphore)
+        null_n = results_df["winner"].isna().sum()
+        log.info(f"    Done: {len(results_df)} comparisons, {null_n} inconclusive")
+
+        # ── Stage 4: TrueSkill ────────────────────────────────────────
+        log.info(f"  Stage 4: TrueSkill aggregation...")
+        scores = compute_trueskill(results_df, filenames)
+
+        meta = macro[macro["filename"].isin(filenames)][
+            ["filename", "chair_key", "date", "title"]
+        ].drop_duplicates("filename")
+        scores = scores.merge(meta, on="filename", how="left")
+        scores = scores.sort_values("hawkishness_phase2", ascending=False).reset_index(drop=True)
+
+        score_path = PROCESSED / f"speech_scores_phase2_{chair}.csv"
+        scores.to_csv(score_path, index=False)
+        log.info(
+            f"    Score range: [{scores['hawkishness_phase2'].min():.1f}, "
+            f"{scores['hawkishness_phase2'].max():.1f}] → saved {score_path.name}"
+        )
+
+        log.info(f"    Top 3 hawkish:")
+        for _, r in scores.head(3).iterrows():
+            log.info(f"      {str(r['date'])[:10]}  {r['title'][:55]:<55}  "
+                     f"score={r['hawkishness_phase2']:.1f}")
+        log.info(f"    Top 3 dovish:")
+        for _, r in scores.tail(3).iterrows():
+            log.info(f"      {str(r['date'])[:10]}  {r['title'][:55]:<55}  "
+                     f"score={r['hawkishness_phase2']:.1f}")
+
+        all_scores.append(scores)
+
+    combined = pd.concat(all_scores, ignore_index=True)
+    combined_path = PROCESSED / "speech_scores_phase2.csv"
+    combined.to_csv(combined_path, index=False)
+    log.info(f"\nAll regimes complete. {combined_path.name}: {len(combined)} speeches")
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
