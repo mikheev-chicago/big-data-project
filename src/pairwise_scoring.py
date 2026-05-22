@@ -35,10 +35,11 @@ import trueskill
 ROOT      = Path(__file__).resolve().parents[1]
 PROCESSED = ROOT / "data" / "processed"
 
-FILTER_MODEL   = "claude-haiku-4-5-20251001"
-COMPARE_MODEL  = "claude-sonnet-4-6"
-BATCH_SIZE     = 50
-MAX_CONCURRENT = 40
+FILTER_MODEL       = "claude-haiku-4-5-20251001"
+COMPARE_MODEL      = "claude-sonnet-4-6"
+BATCH_SIZE         = 50
+MAX_CONCURRENT     = 5
+MAX_PAIRS_PER_REGIME = 300
 
 logging.basicConfig(
     level=logging.INFO,
@@ -371,11 +372,35 @@ async def main():
         filenames = list(representations.keys())
         log.info(f"    {len(filenames)} speeches")
 
-        # ── Stage 3: Round-robin tournament ──────────────────────────
+        # ── Stage 3: Round-robin tournament (capped at MAX_PAIRS_PER_REGIME) ──
         results_path = PROCESSED / f"pairwise_results_{chair}.csv"
-        pairs = generate_pairs(filenames)
-        log.info(f"  Stage 3: Tournament — {len(pairs)} pairs, {MAX_CONCURRENT} concurrent...")
-        results_df = await run_tournament(pairs, representations, client, results_path, semaphore)
+
+        # Skip API stage if we already have enough valid pairs saved
+        skip_tournament = False
+        if results_path.exists():
+            existing = pd.read_csv(results_path)
+            valid_n = existing["winner"].notna().sum()
+            if valid_n >= MAX_PAIRS_PER_REGIME:
+                log.info(
+                    f"  Stage 3: {valid_n} valid pairs already saved "
+                    f"(≥ cap of {MAX_PAIRS_PER_REGIME}) — skipping API calls"
+                )
+                results_df = existing
+                skip_tournament = True
+
+        if not skip_tournament:
+            pairs = generate_pairs(filenames)
+            if len(pairs) > MAX_PAIRS_PER_REGIME:
+                pairs = pairs[:MAX_PAIRS_PER_REGIME]
+                log.info(
+                    f"  Stage 3: Tournament — {len(pairs)} pairs "
+                    f"(capped from {len(filenames)*(len(filenames)-1)//2}), "
+                    f"{MAX_CONCURRENT} concurrent..."
+                )
+            else:
+                log.info(f"  Stage 3: Tournament — {len(pairs)} pairs, {MAX_CONCURRENT} concurrent...")
+            results_df = await run_tournament(pairs, representations, client, results_path, semaphore)
+
         null_n = results_df["winner"].isna().sum()
         log.info(f"    Done: {len(results_df)} comparisons, {null_n} inconclusive")
 
