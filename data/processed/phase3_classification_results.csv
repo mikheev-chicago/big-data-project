@@ -1,0 +1,4 @@
+method,is_accuracy,oos_accuracy,is_f1,oos_f1,is_auc,oos_auc,n_train,n_test
+LogisticRegression,0.6237,0.3333,0.6903,0.4167,0.6754,0.3333,93,21
+RandomForest,0.871,0.4286,0.8947,0.5714,0.9639,0.4815,93,21
+Baseline (majority class),0.5591,0.4286,0.7172,0.6,0.5,0.5,93,21
