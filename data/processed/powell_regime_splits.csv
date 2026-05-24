@@ -1,0 +1,40 @@
+split,regime,regime_label,note,date,title,yield_change,yield_up,hawkishness_phase2
+train,1_normalization,Rate normalization (hiking),,2018-04-06,The Outlook for the U.S. Economy,-0.03,0,65.55
+test,1_normalization,Rate normalization (hiking),1 up + 1 down,2018-05-08,Monetary Policy Influences on Global Financial Conditions and International Capital Flows,0.02,1,29.73
+test,1_normalization,Rate normalization (hiking),1 up + 1 down,2018-05-25,Financial Stability and Central Bank Transparency,-0.02,0,51.74
+train,1_normalization,Rate normalization (hiking),,2018-06-20,Monetary Policy at a Time of Uncertainty and Tight Labor Markets,0.02,1,40.72
+train,1_normalization,Rate normalization (hiking),,2018-08-24,Monetary Policy in a Changing Economy,0.02,1,50.42
+train,1_normalization,Rate normalization (hiking),,2018-11-28,The Federal Reserve's Framework for Monitoring Financial Stability,-0.02,0,43.18
+train,1_normalization,Rate normalization (hiking),,2019-02-28,Recent Economic Developments and Longer-Term Challenges,0.02,1,15.7
+train,1_normalization,Rate normalization (hiking),,2019-03-08,Monetary Policy: Normalization and the Road Ahead,-0.02,0,5.14
+train,1_normalization,Rate normalization (hiking),,2019-05-20,Business Debt and Our Dynamic Financial System,0.01,1,44.91
+train,1_normalization,Rate normalization (hiking),,2019-06-04,Opening Remarks,0.06,1,35.43
+train,1_normalization,Rate normalization (hiking),,2019-06-25,Economic Outlook and Monetary Policy Review,-0.01,0,31.03
+train,1_normalization,Rate normalization (hiking),,2019-07-16,Monetary Policy in the Post-Crisis Era,0.04,1,56.62
+train,2_dovish_pivot,Dovish pivot (insurance cuts),,2019-08-23,Challenges for Monetary Policy,-0.1,0,24.17
+train,2_dovish_pivot,Dovish pivot (insurance cuts),,2019-10-04,Opening Remarks,0.01,1,21.48
+test,2_dovish_pivot,Dovish pivot (insurance cuts),1 up + 1 down,2019-10-08,Data-Dependent Monetary Policy in an Evolving Economy,-0.04,0,28.02
+test,2_dovish_pivot,Dovish pivot (insurance cuts),1 up + 1 down,2019-10-09,Opening Remarks,0.05,1,13.12
+test,3_ZLB,Zero lower bound (COVID + recovery),fallback: 0 up + 2 down (single class in regime),2020-04-09,COVID-19 and the Economy,-0.04,0,21.04
+test,3_ZLB,Zero lower bound (COVID + recovery),fallback: 0 up + 2 down (single class in regime),2020-05-13,Current Economic Issues,-0.01,0,7.5
+train,3_ZLB,Zero lower bound (COVID + recovery),,2021-08-27,Monetary Policy in the Time of COVID,-0.03,0,33.42
+test,4_hiking,Inflation surge + hiking,1 up + 1 down,2022-03-21,Restoring Price Stability,0.17,1,68.12
+train,4_hiking,Inflation surge + hiking,,2022-08-26,Monetary Policy and Price Stability,0.02,1,100.0
+train,4_hiking,Inflation surge + hiking,,2022-11-30,Inflation and the Labor Market,-0.1,0,88.89
+train,4_hiking,Inflation surge + hiking,,2023-01-10,"Panel on ""Central Bank Independence and the MandateâEvolving Views""",0.05,1,76.54
+train,4_hiking,Inflation surge + hiking,,2023-06-29,Financial Stability and Economic Developments,0.16,1,70.43
+train,4_hiking,Inflation surge + hiking,,2023-08-25,Inflation:  Progress and the Path Ahead,0.05,1,85.45
+test,4_hiking,Inflation surge + hiking,1 up + 1 down,2023-10-19,Opening Remarks,-0.05,0,73.02
+train,4_hiking,Inflation surge + hiking,,2023-11-09,Opening Remarks,0.1,1,85.09
+train,4_hiking,Inflation surge + hiking,,2023-12-01,Opening Remarks,-0.17,0,56.35
+train,4_hiking,Inflation surge + hiking,,2024-04-03,Opening Remarks,-0.02,0,93.55
+train,4_hiking,Inflation surge + hiking,,2024-08-23,Review and Outlook,-0.09,0,34.76
+test,5_cutting,Cutting cycle + tariff uncertainty,1 up + 1 down,2024-09-30,Economic Outlook,0.11,1,37.25
+train,5_cutting,Cutting cycle + tariff uncertainty,,2024-11-14,Economic Outlook,0.07,1,42.82
+train,5_cutting,Cutting cycle + tariff uncertainty,,2025-03-07,Economic Outlook,0.03,1,71.86
+test,5_cutting,Cutting cycle + tariff uncertainty,1 up + 1 down,2025-04-04,Economic Outlook,-0.03,0,65.85
+train,5_cutting,Cutting cycle + tariff uncertainty,,2025-04-16,Economic Outlook,-0.07,0,53.2
+train,5_cutting,Cutting cycle + tariff uncertainty,,2025-05-15,Opening Remarks,-0.09,0,32.91
+train,5_cutting,Cutting cycle + tariff uncertainty,,2025-08-22,Monetary Policy and the Fedâs Framework Review,-0.11,0,39.08
+train,5_cutting,Cutting cycle + tariff uncertainty,,2025-09-23,Economic Outlook,-0.08,0,43.41
+train,5_cutting,Cutting cycle + tariff uncertainty,,2025-10-14,Understanding the Fedâs Balance Sheet,-0.04,0,58.69
