@@ -337,3 +337,69 @@ The gap is directionally strong and the effect size (r=0.43) is meaningful. p=0.
 - Cluster 2 (3 speeches): financial stability
 
 **Robustness verdict:** The LLM hawkishness methodology holds up on the clean single-regime dataset. The +19.4 pt signal gap and LOOCV AUC above 0.63 suggest the TrueSkill scores are capturing real information about market-relevant hawkishness, not just chair-specific style.
+
+---
+
+## 8. Powell-Only Robustness Analysis (Stratified OOS)
+
+**Purpose:** Test methodology on Powell's 45 speeches (2018–2025) using stratified OOS — hold out 1 yield-up + 1 yield-down speech from each of 5 macro regimes rather than a simple time split. Directly tests whether the hawkishness signal generalizes *across* economic environments, not just within one.
+
+**Regimes and OOS selection:**
+
+| Regime | Period | OOS held out |
+|---|---|---|
+| 1. Rate normalization | 2018–Jul 2019 | 1 up + 1 down |
+| 2. Dovish pivot | Aug 2019–Feb 2020 | 1 up + 1 down |
+| 3. Zero lower bound (COVID + recovery) | Mar 2020–Feb 2022 | **0 up + 2 down** (no yield-up speeches in ZLB) |
+| 4. Inflation surge + hiking | Mar 2022–Aug 2024 | 1 up + 1 down |
+| 5. Cutting cycle + tariff uncertainty | Sep 2024–present | 1 up + 1 down |
+
+Train: 29 speeches | OOS: 10 speeches (4 up, 6 down)
+
+**Signal Strength (all 39 non-zero speeches):**
+
+| Metric | Yellen | Powell |
+|---|---|---|
+| Mean hawkishness — yield UP | 55.7 | 52.5 |
+| Mean hawkishness — yield DOWN | 36.3 | 45.3 |
+| **Gap** | **+19.4 pts** | **+7.3 pts** |
+| p-value | 0.097 | 0.366 |
+| Point-biserial r | **0.429** | **0.150** |
+
+The signal is much weaker for Powell. **Per-regime breakdown reveals why:**
+- Regime 1 (normalization): UP=39.1 vs DOWN=39.3 — **essentially zero signal**
+- Regime 2 (dovish pivot): UP=17.3 vs DOWN=26.1 — **signal reversed** (less hawkish → yield rises)
+- Regime 4 (hiking): UP=80.9 vs DOWN=69.3 — signal present (+11.6 pts)
+- Regime 5 (cutting): UP=50.6 vs DOWN=48.9 — near zero (+1.7 pts)
+
+The small aggregate gap (+7.3 pts) is almost entirely driven by the hiking regime.
+
+**Classification:**
+
+| Model | IS Acc | OOS Acc | IS AUC | OOS AUC |
+|---|---|---|---|---|
+| Logistic — phase2 only | 0.517 | 0.600 | 0.624 | **0.500** |
+| Logistic — macro only | 0.517 | 0.600 | 0.745 | **0.625** |
+| Logistic — full | 0.724 | 0.300 | 0.800 | 0.458 |
+| Logistic — Exp 1 only | 0.517 | 0.600 | 0.524 | 0.542 |
+| Random Forest | 0.897 | 0.300 | 0.995 | 0.375 |
+| Baseline (majority) | 0.517 | 0.600 | 0.500 | 0.500 |
+| **LOOCV (phase2 only)** | — | — | — | **0.095** |
+
+**LOOCV AUC=0.095** is the diagnostic finding: the univariate logistic is almost perfectly anti-predictive when trained and evaluated across all regimes. This confirms **regime non-stationarity** — the hawkishness→yield direction relationship reverses depending on the macro environment.
+
+**Best OOS AUC: 0.625 from macro controls alone** — macroeconomic state variables (fed funds rate, PCE, unemployment, GDP growth) are stronger predictors of same-day yield direction than speech content in the Powell era.
+
+**Regression:** Collapse expected and observed. All OOS R² deeply negative (best LASSO OOS R²=−6.63 vs Yellen's −0.75). Powell's 10-speech OOS set spans 5 very different macro environments, making any regression model trained on 29 speeches unstable.
+
+**Unsupervised (k=5):** 5 clusters with partially interpretable themes — pandemic/labor market (19 speeches), monetary policy review/framework (6), core rates/inflation/expansion (15), financial stability (2), recovery/wages (3).
+
+**Interpretation: Regime non-stationarity**
+
+The LOOCV AUC=0.095 and per-regime signal breakdown together reveal the core problem: the hawkishness→yield direction relationship is not stable across Powell's tenure. In the normalization regime (2018-2019), hawkishness scores near 40 accompany both rising and falling yields — the macro environment (trade war uncertainty, small moves) dominated communication. In the hiking regime (2022-2023), all speeches score 57-100, yet yields still went both up and down depending on market interpretation of degree-of-hawkishness signals. In the cutting regime, tariff uncertainty creates noise the speech content can't resolve.
+
+When the LOOCV trains on all regimes simultaneously, the model learns a confused signal: "high hawkishness = probably hiking regime = but hiking speeches go both directions" — and predicts systematically wrong.
+
+**Contrast with Yellen:** Yellen's single regime (steady 2015-2017 hiking cycle with genuine speech-to-speech variation in tone) gave the hawkishness score something stable to latch onto. Powell's regime-switching tenure does not.
+
+**Powell verdict:** The hawkishness signal does not generalize across Powell's 5 economic regimes. Macro controls outperform speech content for Powell. This is not a failure of the NLP methodology — it is an economically interpretable finding: Fed communication is most informative about yield direction when the macro environment is stable and speech tone varies speech-to-speech. When macro fundamentals themselves are shifting dramatically between speeches, they overwhelm the communication signal.
