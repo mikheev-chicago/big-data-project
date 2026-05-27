@@ -345,7 +345,7 @@ Outputs: `oos_results.csv`, `hawkishness_quarterly.csv`, `score_correlations.csv
 ## Project Structure
 
 ```
-fedspeak-project/
+big-data-project/
 ├── data/
 │   ├── raw/
 │   │   ├── speeches/                        # one .txt file per speech (242 total)

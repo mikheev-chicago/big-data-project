@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Step 3: Sentence tokenization and contrastive-connector splitting
+Step 2: Sentence tokenization and contrastive-connector splitting
 
 Tokenizes each speech with spaCy, then splits sentences on contrastive
 connectors (but / however / while / although / ;) to isolate mixed-tone

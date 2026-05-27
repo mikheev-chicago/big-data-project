@@ -423,12 +423,9 @@ def main():
     cluster_df.to_csv(PROCESSED / "powell_clusters.csv", index=False)
 
     # ── Regression ────────────────────────────────────────────────────────────
+    # Reuse the same non-zero yield train/test split for regression so that
+    # regression and classification results are directly comparable.
     log.info("\n── Regression ───────────────────────────────────────────────────────────────")
-    # Use full df (including zero-yield) for regression train/test
-    reg_train = df[df.index.isin(train_cdf.index.map(
-        lambda i: df[df["filename"] == train_cdf.loc[i, "filename"]].index[0]
-        if i < len(train_cdf) else i
-    ))] if False else train_cdf  # simplify: use same nonzero split for regression too
     reg = run_regression(train_cdf, test_cdf)
     for _, r in reg.iterrows():
         log.info(f"  {r['method']:<8}  IS R²={r['is_r2']:+.4f}  "

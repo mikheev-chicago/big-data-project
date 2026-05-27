@@ -110,7 +110,6 @@ def fmt_se(se: float) -> str:
     return f"({se:.4f})"
 
 
-
 def print_table(results: list, labels: list, var_order: list, title: str):
     col_w = 14
     sep = "─" * (30 + col_w * len(results))
